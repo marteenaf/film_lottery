@@ -1,0 +1,11 @@
+{
+  "name": "film_lottery",
+  "version": "1.0.0",
+  "description": "A little web app to make a list of movies and randomly pick one to watch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martina Fatato",
+  "license": "ISC"
+}
