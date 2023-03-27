@@ -18,6 +18,9 @@ const vuetify = createVuetify({
 			md,
 		},
 	},
+	theme:{
+		defaultTheme:"light",
+	}
 });
 
 createApp(App).use(vuetify).mount("#app");
