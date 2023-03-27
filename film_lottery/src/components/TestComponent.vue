@@ -1,5 +1,5 @@
 <template>
-    <v-btn prepend-icon="ads_click" color="primary">Click Me!</v-btn>
+    <v-btn prepend-icon="ads_click" color="secondary" variant="tonal">Click Me!</v-btn>
 </template>
 
 <script>
