@@ -1,0 +1,31 @@
+[
+  {
+    "uuid": "f1a86198-e1b6-47b8-852e-76c3d832e1bc",
+    "name": "My List A",
+    "createdBy": "martina.fatato@gmail.com",
+    "maxLength": 5,
+    "movies": [
+      {
+        "dbid": 299534,
+        "watched": false
+      },
+      {
+        "dbid": 19995,
+        "watched": false
+      },
+      {
+        "dbid": 597,
+        "watched": false
+      }
+     ],
+    "users": ["martina.fatato@gmail.com"]
+  },
+  {
+    "uuid": "30f2a89c-61bf-48e7-abf8-0580e3f6d4b9",
+    "name": "My List B",
+    "createdBy": "martina.fatato@gmail.com",
+    "maxLength": 5,
+    "movies": [],
+    "users": ["martina.fatato@gmail.com"]
+  }
+ ]
