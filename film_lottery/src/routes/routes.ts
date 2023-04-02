@@ -1,5 +1,7 @@
 import HomeView from "@/components/views/HomeView.vue";
 import ListView from "@/components/views/ListView.vue";
+import NewListView from "@/components/views/NewListView.vue";
+
 import { createRouter,createWebHashHistory } from "vue-router";
 
 const routes = [
@@ -10,6 +12,10 @@ const routes = [
 	{
 		path: "/list/:Lid",
 		component: ListView
+	},
+	{
+		path:"/new-list/:key",
+		component: NewListView
 	}
 ];
 
