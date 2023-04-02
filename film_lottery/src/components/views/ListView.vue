@@ -1,6 +1,5 @@
 <template>
   <h1>{{ list.name || "No selected list" }}</h1>
-  <PickList />
 </template>
 <script>
 import { useListStore } from "@/stores/listsStore";
@@ -21,4 +20,5 @@ export default {
 	}
 };
 </script>
-<style></style>
+<style>
+</style>
