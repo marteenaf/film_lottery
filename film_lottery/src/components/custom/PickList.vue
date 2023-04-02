@@ -15,7 +15,8 @@
     <div class="pick-list-navigator">
       <v-item-group v-model="window" class="vertical-group" mandatory>
         <v-item v-for="(list, i) in listNames" :key="list.id" :value="i" v-slot="{ toggle, isSelected }">
-          <v-btn size="x-small" :icon="isSelected ? 'lense' : 'fiber_manual_record'" variant="text" @click="toggle"
+          <!--svg instead of icons to achieve the circle size we want-->
+					<v-btn size="x-small" :icon="isSelected ? 'lense' : 'fiber_manual_record'" variant="text" @click="toggle"
             :class="isSelected ? 'selected' : 'un-selected'"></v-btn>
         </v-item>
       </v-item-group>
