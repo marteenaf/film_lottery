@@ -1,12 +1,14 @@
 <template>
-  <v-btn icon="arrow_back" variant="outlined" to="/"></v-btn>
+  <HomeButton routePath="/"/>
   <h1>{{ list.name || "No selected list" }}</h1>
 </template>
 <script>
 import { useListStore } from "@/stores/listsStore";
+import HomeButton from "../reusable/HomeButton.vue";
 export default {
 	name: "ListView",
 	components: {
+		HomeButton,
 	},
 	data() {
 		return {
