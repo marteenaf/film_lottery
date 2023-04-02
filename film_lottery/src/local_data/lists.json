@@ -27,5 +27,21 @@
     "maxLength": 5,
     "movies": [],
     "users": ["martina.fatato@gmail.com"]
+  },
+  {
+    "uuid": "30f2a89c-61bf-48e7-abf8-0580e3f6d4b8",
+    "name": "My List C",
+    "createdBy": "martina.fatato@gmail.com",
+    "maxLength": 5,
+    "movies": [],
+    "users": ["martina.fatato@gmail.com"]
+  },
+  {
+    "uuid": "30f2a89c-61bf-48e7-abf8-0580e3f6d4b7",
+    "name": "My List D",
+    "createdBy": "martina.fatato@gmail.com",
+    "maxLength": 5,
+    "movies": [],
+    "users": ["martina.fatato@gmail.com"]
   }
  ]
