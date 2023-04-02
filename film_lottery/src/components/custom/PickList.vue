@@ -36,6 +36,13 @@ export default {
 		console.debug("[Pick List] Mounting...", this.listState.allLists);
 		this.listNames = this.listState.getAllNames;
 		console.debug("[Pick List] List names = ", this.listNames);
+		if(this.listState.selectedList&&Object.keys(this.listState.selectedList).length>0){
+			console.debug("Going for a list...", this.listState.selectedList);
+			const list = this.listNames.find((l)=>l.id===this.listState.selectedList.id);
+			if(list){
+				this.window = this.listNames.indexOf(list);
+			}
+		}
 	},
 	methods: {
 		selectList(id) {
