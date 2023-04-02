@@ -5,7 +5,7 @@
       <h4>Pick a List</h4>
       <v-window v-model="window" continuous direction="vertical">
         <v-window-item v-for="list in listNames" :key="list.id">
-          <router-link to="/list">
+          <router-link :to="'/list/'+list.id">
             <h3 @click="selectList(list.id)">{{ list.name }}</h3>
           </router-link>
         </v-window-item>
@@ -51,7 +51,7 @@ export default {
 	},
 	methods: {
 		selectList(id) {
-			this.listState.setCurrentList(id);
+			//this.listState.setCurrentList(id);
 			console.debug("[Pick List] Navigate to list page for...", this.listState.selectedList);
 		},
 		next() {
