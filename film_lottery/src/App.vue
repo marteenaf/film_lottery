@@ -1,14 +1,17 @@
 <template>
-  <TestComponent />
+  <!-- <TestComponent /> -->
+ <HomeView />
+
 </template>
 
 <script>
-import TestComponent from "./components/TestComponent.vue";
+import HomeView from "./components/views/HomeView.vue";
 
 export default {
 	name: "App",
 	components: {
-		TestComponent,
+		HomeView,
+		// TestComponent,
 	}
 };
 </script>
@@ -18,8 +21,8 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 60px 20px;
 }
 </style>
