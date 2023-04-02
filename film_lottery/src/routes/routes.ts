@@ -8,7 +8,7 @@ const routes = [
 		component: HomeView
 	},
 	{
-		path: "/list",
+		path: "/list/:Lid",
 		component: ListView
 	}
 ];
