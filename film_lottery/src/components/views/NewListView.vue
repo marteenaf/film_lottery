@@ -42,7 +42,7 @@ export default {
 			console.debug("[New List] Changing route...",this.key);
 			switch (this.key) {
 			case "name":
-				return "/";
+				return "/menu";
 			case "maxLength":
 				return "/new-list/name";
 			case "users":
