@@ -1,17 +1,11 @@
 <template>
-  <!-- <TestComponent /> -->
- <HomeView />
-
+<router-view></router-view>
 </template>
 
 <script>
-import HomeView from "./components/views/HomeView.vue";
-
 export default {
 	name: "App",
 	components: {
-		HomeView,
-		// TestComponent,
 	}
 };
 </script>
@@ -24,5 +18,9 @@ export default {
   /* text-align: center; */
   color: #2c3e50;
   margin: 60px 20px;
+}
+a{
+  text-decoration: none;
+  color:#2c3e50;
 }
 </style>
