@@ -77,7 +77,7 @@ h3 {
   justify-content: space-between;
   /* gap:2rem; */
   align-items: center;
-  width: 300px;
+  width: 200px;
 }
 
 
