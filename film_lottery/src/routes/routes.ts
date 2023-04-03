@@ -24,6 +24,7 @@ const routes = [
 	},
 	{
 		path: "/new-list",
+		name:"newList",
 		redirect: "/new-list/name"
 	},
 	{
