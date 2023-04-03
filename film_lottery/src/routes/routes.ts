@@ -20,12 +20,13 @@ const routes = [
 	},
 	{
 		path: "/new-list/:key",
+		name:"newListKey",
 		component: NewListView
 	},
 	{
 		path: "/new-list",
 		name:"newList",
-		redirect: "/new-list/name"
+		component:NewListView
 	},
 	{
 		path: "/menu",
