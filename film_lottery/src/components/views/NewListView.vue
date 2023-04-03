@@ -1,12 +1,19 @@
 <template>
-	<HomeButton :routePath="getRoutePath()" icon="arrow_back"></HomeButton>
-	<h1>New List {{ key }}</h1>
+	<HomeButton :routePath="key == 'name' ? '/menu' : '/new-list'" icon="arrow_back" @click="prevStep"></HomeButton>
 	<v-window v-model="key">
 		<v-window-item value="name">
-			Name
+			<h4>Enter a list name</h4>
+			<v-text-field v-model="name" clearable variant="outlined"></v-text-field>
 		</v-window-item>
 		<v-window-item value="maxLength">
-			Length
+			<h4>Pick a size</h4>
+			<v-item-group v-model="maxLength" mandatory>
+				<v-item v-for="size in sizes" :key="size" :value="size">
+					<template #default="{isSelected, toggle}">
+					<v-btn variant="outlined" :size="size*5" icon="" @click="toggle()" :class="isSelected?'filled':''">{{ size }}</v-btn>
+				</template>
+				</v-item>
+			</v-item-group>
 		</v-window-item>
 		<v-window-item value="users">
 			Users
@@ -15,46 +22,78 @@
 			Movies
 		</v-window-item>
 	</v-window>
+	<h4>{{ name }}</h4>
+	<h4>{{ maxLength }}</h4>
+	<h4 v-for="user in users" :key="user">{{ user }}</h4>
+	<MenuButton icon="done" @click="nextStep"></MenuButton>
 </template>
 <script>
 import HomeButton from "../reusable/HomeButton.vue";
+import MenuButton from "../reusable/MenuButton.vue";
 export default {
 	name: "NewList",
 	components: {
-		HomeButton
+		HomeButton,
+		MenuButton
 	},
 	data() {
 		return {
 			list: null,
 			name: "",
-			maxLength: 5,
+			maxLength: 6,
 			users: [],
 			movies: [],
-			key: "maxLength"
+			key: "name",
+			sizes: [6, 10, 20]
 		};
 	},
 	mounted() {
-		console.debug("[New List] Mounting...",this.key);
-		this.key = this.$route.params.key;
+		console.debug("[New List] Mounting...", this.key);
+		if (this.$route.params.key) {
+			console.debug("has params");
+			this.key = this.$route.params.key;
+		} else {
+			this.key = "name";
+		}
 	},
 	methods: {
-		getRoutePath() {
-			console.debug("[New List] Changing route...",this.key);
+		prevStep() {
+			console.debug("[New List] Prev Step");
+			switch (this.key) {
+			case "maxLength":
+				this.key = "name";
+				break;
+			case "users":
+				this.key = "maxLength";
+				break;
+			case "movies":
+				this.key = "users";
+			}
+		},
+		nextStep() {
+			console.debug("[New List] Next Step");
 			switch (this.key) {
 			case "name":
-				return "/menu";
+				this.key = "maxLength";
+				break;
 			case "maxLength":
-				return "/new-list/name";
+				this.key = "users";
+				break;
 			case "users":
-				return "/new-list/maxLength";
-			case "movies":
-				return "/new-list/users";
+				this.key = "movies";
+				break;
 			}
 		}
 	},
-	updated(){
-		console.debug("[New List] Updating...",this.key);
-		this.key = this.$route.params.key;
+
+	updated() {
+		console.debug("[New List] Updating...", this.key);
+		//this.key = this.$route.params.key;
 	}
 };
 </script>
+<style scoped>
+.filled{
+background:#3761F9;
+}
+</style>

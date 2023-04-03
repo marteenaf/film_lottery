@@ -1,6 +1,5 @@
 <template>
 	<HomeButton routePath="/menu" icon="menu"/>
-  <h1>Film Lottery</h1>
   <PickList />
 </template>
 <script>
