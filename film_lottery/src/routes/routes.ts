@@ -9,32 +9,38 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
 	{
 		path: "/",
+		name:"Home",
 		component: HomeView
 	},
 	{
 		path: "/list/:Lid",
+		name:"ListKey",
 		component: ListView
 	},
 	{
 		path: "/list",
+		name:"List",
 		redirect: "/list/x"
 	},
 	{
 		path: "/new-list/:key",
-		name: "newListKey",
+		name: "NewListKey",
 		component: NewListView
 	},
 	{
 		path: "/new-list",
-		name: "newList",
+		name: "NewList",
 		component: NewListView
 	},
 	{
 		path: "/menu",
-		component: MenuView
+		name:"Menu",
+		component: MenuView,
+		meta: { transition: "slide-left" },
 	},
 	{
 		path: "/add-movies",
+		name:"AddMovies",
 		component: AddMoviesView
 	}
 
