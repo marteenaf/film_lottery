@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { getLocalFile } from "@/scripts/queries/localQueries";
+import uuid4 from "uuid4";
 
 export const useListStore = defineStore("listStore", {
 	state: () => {
@@ -23,6 +24,23 @@ export const useListStore = defineStore("listStore", {
 				const list = this.allLists.find(l=>l.uuid==id);
 				this.selectedList = list?list:{};
 			}
+		},
+		async postNewList(name,maxLength,users,createdBy="xxx@gmail.com"){
+			const uuid = uuid4();
+			const newList: List ={
+				name:name,
+				createdBy:createdBy,
+				movies:[],
+				maxLength:maxLength,
+				users:[...users],
+				uuid:uuid,
+			};
+
+			//here we post?
+			this.allLists.push(newList);
+			this.setCurrentList(uuid);
+			console.debug("[POST] New List", newList, this.selectedList);
+			console.debug(this.allLists);
 		}
 	}
 });
@@ -32,7 +50,8 @@ interface List {
 	createdBy: string,
 	movies: Movie[],
 	maxLength: number,
-	users: string[]
+	users: string[],
+	uuid:string,
 
 }
 
