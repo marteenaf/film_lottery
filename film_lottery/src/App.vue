@@ -1,5 +1,5 @@
 <template>
-<router-view></router-view>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -19,8 +19,9 @@ export default {
   color: #2c3e50;
   margin: 84px 20px;
 }
-a{
+
+a {
   text-decoration: none;
-  color:#2c3e50;
+  color: #2c3e50;
 }
 </style>

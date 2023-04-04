@@ -44,7 +44,7 @@ export default {
 }
 
 .pick-btn:active {
-  transform: translate3d(0, 20px, 0);
-  box-shadow: none;
+  transform: translate3d(0, 18px, 0);
+  box-shadow:0 2px 0 -1px var(--shadow-color), 0 3px 0 #2c3e50
 }
 </style>
