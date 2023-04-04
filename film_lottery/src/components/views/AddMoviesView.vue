@@ -1,8 +1,19 @@
 <template>
-<div>Add movies</div>
+  <HomeButton routePath="/" />
+  <div>Add movies</div>
 </template>
 <script>
-export default{
-	name:"AddMoviesView",
+import HomeButton from "../reusable/HomeButton.vue";
+import { useListStore } from "../../stores/listsStore";
+export default {
+	name: "AddMoviesView",
+	components: {
+		HomeButton
+	},
+	data() {
+		return {
+			listStore: useListStore(),
+		};
+	}
 };
 </script>
