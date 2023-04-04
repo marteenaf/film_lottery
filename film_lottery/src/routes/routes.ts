@@ -2,7 +2,7 @@ import HomeView from "@/components/views/HomeView.vue";
 import ListView from "@/components/views/ListView.vue";
 import NewListView from "@/components/views/NewListView.vue";
 import MenuView from "@/components/views/MenuView.vue";
-
+import AddMoviesView from "../components/views/AddMoviesView.vue";
 
 import { createRouter, createWebHashHistory } from "vue-router";
 
@@ -35,6 +35,7 @@ const routes = [
 	},
 	{
 		path: "/add-movies",
+		component: AddMoviesView
 	}
 
 ];
