@@ -18,9 +18,6 @@
 		<v-window-item value="users">
 			Users
 		</v-window-item>
-		<v-window-item value="movies">
-			Movies
-		</v-window-item>
 	</v-window>
 	<h4>{{ name }}</h4>
 	<h4>{{ maxLength }}</h4>
@@ -66,8 +63,6 @@ export default {
 			case "users":
 				this.key = "maxLength";
 				break;
-			case "movies":
-				this.key = "users";
 			}
 		},
 		nextStep() {
@@ -80,7 +75,7 @@ export default {
 				this.key = "users";
 				break;
 			case "users":
-				this.key = "movies";
+				//here we set current list to the newly created one and then route to movies page
 				break;
 			}
 		}

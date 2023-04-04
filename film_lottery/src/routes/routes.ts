@@ -3,6 +3,7 @@ import ListView from "@/components/views/ListView.vue";
 import NewListView from "@/components/views/NewListView.vue";
 import MenuView from "@/components/views/MenuView.vue";
 
+
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
@@ -20,17 +21,20 @@ const routes = [
 	},
 	{
 		path: "/new-list/:key",
-		name:"newListKey",
+		name: "newListKey",
 		component: NewListView
 	},
 	{
 		path: "/new-list",
-		name:"newList",
-		component:NewListView
+		name: "newList",
+		component: NewListView
 	},
 	{
 		path: "/menu",
 		component: MenuView
+	},
+	{
+		path: "/add-movies",
 	}
 
 ];
