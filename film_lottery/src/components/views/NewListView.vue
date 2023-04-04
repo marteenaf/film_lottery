@@ -52,6 +52,8 @@
 import HomeButton from "../reusable/HomeButton.vue";
 import MenuButton from "../reusable/MenuButton.vue";
 import { useUserStore } from "@/stores/usersStore";
+import { useListStore } from "@/stores/listsStore";
+
 export default {
 	name: "NewList",
 	components: {
@@ -61,7 +63,7 @@ export default {
 	data() {
 		return {
 			userState: useUserStore(),
-			list: null,
+			listState: useListStore(),
 			name: "",
 			maxLength: 6,
 			users: [],
@@ -108,11 +110,16 @@ export default {
 				break;
 			case "users":
 				//here we set current list to the newly created one and then route to movies page
+				//add a function to submit the list
+				this.submitList();
 				break;
 			}
+		},
+		async submitList(){
+			const userEmails = this.users.map(u=>u.email);
+			await this.listState.postNewList(this.name,this.maxLength,userEmails);
 		}
 	},
-
 	updated() {
 		console.debug("[New List] Updating...", this.key);
 		//this.key = this.$route.params.key;
@@ -141,7 +148,6 @@ export default {
 			const mapRange = (value, x1, y1, x2, y2) => (value - x1) * (y2 - x2) / (y1 - x1) + x2;
 			const min = Math.min(...this.sizes);
 			const max = Math.max(...this.sizes);
-
 			return this.sizes.map(s => {
 				return mapRange(s, min, max, 30, 100);
 			});

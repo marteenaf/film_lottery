@@ -19,13 +19,13 @@ export default {
 		openNewList(){
 			console.debug("[Menu] Opening Menu...");
 			// this.$router.push({name:"newListKey",params:{key:"name"}});
-			this.$router.push({name:"newList"});
+			this.$router.push({name:"NewList"});
 		},
 		openDiary(){
 			console.debug("[Menu] Opening Diary...");
 		},
 		openEditListUsers(){
-			this.$router.push({name:"newListKey",params:{key:"users"}});
+			this.$router.push({name:"NewListKey",params:{key:"users"}});
 		}
 	}
 };
