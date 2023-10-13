@@ -13,7 +13,7 @@ export const useListStore = defineStore("listStore", {
     getAllNames() {
       const names: string[] = this.allLists.map((l) => { return { name: l.name, id: l.uuid }; });
       return names;
-    },
+    }
   },
   actions: {
     async queryAllLists() {
@@ -46,7 +46,8 @@ export const useListStore = defineStore("listStore", {
     updateCurrentListMovie(object) {
       console.debug(object),
         this.selectedList.movies.find(m => m.dbid == object.dbid).watched = object.watched;
-    }
+    },
+
   }
 });
 

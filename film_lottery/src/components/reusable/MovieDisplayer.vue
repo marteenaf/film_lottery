@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     movieTitle() {
-      return this.movie.dbid.toString();
+      return this.movie.title.toString();
     }
   }
 };

@@ -15,14 +15,16 @@
 <script>
 import HomeButton from "./components/reusable/HomeButton.vue";
 import { useListStore } from "./stores/listsStore";
+import { testFetch } from "./scripts/fetchTest";
 export default {
-	name: "App",
-	components: {
-		HomeButton
-	},
-	async mounted() {
-		await useListStore().queryAllLists();
-	}
+  name: "App",
+  components: {
+    HomeButton
+  },
+  async mounted() {
+    await useListStore().queryAllLists();
+    await testFetch();
+  }
 };
 </script>
 
