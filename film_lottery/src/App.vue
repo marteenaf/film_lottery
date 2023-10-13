@@ -1,11 +1,27 @@
 <template>
-  <router-view></router-view>
+  <v-app>
+    <v-layout>
+      <v-main>
+        <v-app-bar>
+          <home-button :routePath="'/'"></home-button>
+          <h1>Movie Lottery</h1>
+        </v-app-bar>
+        <router-view></router-view>
+      </v-main>
+    </v-layout>
+  </v-app>
 </template>
 
 <script>
+import HomeButton from "./components/reusable/HomeButton.vue";
+import { useListStore } from "./stores/listsStore";
 export default {
 	name: "App",
 	components: {
+		HomeButton
+	},
+	async mounted() {
+		await useListStore().queryAllLists();
 	}
 };
 </script>
@@ -17,7 +33,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   color: #2c3e50;
-  margin: 84px 20px;
 }
 
 a {
