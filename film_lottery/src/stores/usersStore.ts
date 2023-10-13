@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { getLocalFile } from "@/scripts/queries/localQueries";
+import { getLocalFile } from "@/scripts/Data IO/localQueries";
 
-interface User{
-  email:string,
-  userName:string,
+interface User {
+	email: string,
+	userName: string,
 }
 
 export const useUserStore = defineStore("userStore", {
@@ -12,8 +12,8 @@ export const useUserStore = defineStore("userStore", {
 			allUsers: [] as User[],
 		};
 	},
-	actions:{
-		async queryAllUsers(){
+	actions: {
+		async queryAllUsers() {
 			this.allUsers = await getLocalFile("/src/local_data/users.json") as User[];
 		}
 	}
