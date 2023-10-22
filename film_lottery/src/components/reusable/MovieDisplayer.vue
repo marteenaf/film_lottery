@@ -1,10 +1,13 @@
 <template>
   <v-card variant="outlined" class="d-flex">
-    <v-card-item :class="watched ? 'watched' : ''">{{ movieTitle }}</v-card-item>
+    <v-card-item style="flex:auto !important">
+      <v-card-title :class="movie.watched ? 'watched' : ''" style="text-wrap:wrap">{{ movieTitle }}</v-card-title>
+      <v-card-subtitle>{{ movie.id }}</v-card-subtitle>
+    </v-card-item>
     <v-spacer></v-spacer>
+    <v-card-item>{{ movie.watched ? "Watched" : "" }}</v-card-item>
     <v-card-actions>
-      <v-card-text>{{ watched ? "Watched" : "" }}</v-card-text>
-      <v-checkbox v-model="watched" hide-details @update:modelValue="(e) => this.$emit('update-movie', e)"></v-checkbox>
+      <slot name="add-list"></slot>
     </v-card-actions>
   </v-card>
 </template>
@@ -13,13 +16,7 @@ export default {
   name: "MovieDisplayer",
   props: ["movie"],
   data() {
-    return { watched: this.movie.watched, };
-  },
-  mounted() {
-    console.debug("[Movie Viewer] Mounting...", this.movie, this.watched);
-  },
-  methods: {
-
+    return {};
   },
   computed: {
     movieTitle() {

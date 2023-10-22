@@ -13,6 +13,13 @@ export const useListStore = defineStore("listStore", {
     getAllNames() {
       const names: string[] = this.allLists.map((l) => { return { name: l.name, id: l.uuid }; });
       return names;
+    },
+    getSelectedListMovies() {
+      if (this.selectedList && this.selectedList.movies) {
+        return this.selectedList.movies.map(m => m.id);
+      } else {
+        return [];
+      }
     }
   },
   actions: {
@@ -20,7 +27,7 @@ export const useListStore = defineStore("listStore", {
       this.allLists = await getLocalFile("/src/local_data/lists.json") as List[];
     },
     setCurrentList(id) {
-
+      console.debug("Setting list");
       if (this.allLists.length > 0) {
         const list = this.allLists.find(l => l.uuid == id);
         this.selectedList = list ? list : {};
@@ -46,6 +53,25 @@ export const useListStore = defineStore("listStore", {
     updateCurrentListMovie(object) {
       console.debug(object),
         this.selectedList.movies.find(m => m.dbid == object.dbid).watched = object.watched;
+    },
+    addMovie(movieId) {
+      const myList = this.selectedList;
+
+      if (myList) {
+        const exists = myList.movies.filter(m => m.dbid == movieId);
+        if (exists.length == 0) {
+          if (myList.movies.length < myList.maxLength) {
+            myList.movies.push({ dbid: movieId, watched: false });
+            this.setCurrentList(myList.uuid);
+          } else {
+            return "You have already filled all slots in this list";
+          }
+        } else {
+          return "This movie was already added to this list";
+        }
+      } else {
+        return "No list selected";
+      }
     },
 
   }
