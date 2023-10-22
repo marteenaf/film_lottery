@@ -1,39 +1,37 @@
 <template>
-	<HomeButton routePath="/menu" icon="menu" />
-	<div class="wrapper-h">
-		<PickButton color="red" shadowColor="darkred" textColor="#1d2a37"></PickButton>
-		<PickButton color="green" shadowColor="darkgreen" textColor="#1d2a37" text="watch"></PickButton>
-		<PickList />
-	</div>
+  <v-container>
+    <v-list lines="two">
+      <v-list-item v-for="list in listStore.allLists" :key="list" :title="list.name"
+        :subtitle="list.movies.length + '/' + list.maxLength" active-color="primary" :value="list.uuid"
+        @click="viewList(list.uuid)"></v-list-item>
+    </v-list>
+    <v-btn :prepend-icon="'add'" color="primary" variant="elevated"
+      @click="this.$router.push({ name: 'NewListView' })">Add
+      new list</v-btn>
+  </v-container>
 </template>
 <script>
 import { useListStore } from "@/stores/listsStore";
-import PickList from "../custom/PickList.vue";
-import HomeButton from "../reusable/HomeButton.vue";
-import PickButton from "../reusable/PickButton.vue";
 export default {
-	name: "HomeView",
-	components: {
-		PickList,
-		HomeButton,
-		PickButton
-	},
-	data() {
-		return {
-			listState: useListStore(),
-		};
-	},
-	async mounted() {
-		console.debug("[Home View] Mounting...");
-
-	}
+  name: "HomeView",
+  components: {
+  },
+  data() {
+    return {
+      listStore: useListStore(),
+    };
+  },
+  mounted() {
+    console.debug("[Home View] Mounting...");
+    console.table(this.listStore.allLists);
+  },
+  methods: {
+    viewList(value) {
+      this.$router.push({ name: "ListView", params: { id: value } });
+    }
+  }
 };
 </script>
 <style>
-.wrapper-h{
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-around;
-}
+.wrapper-h {}
 </style>
