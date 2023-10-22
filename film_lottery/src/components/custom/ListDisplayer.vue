@@ -1,28 +1,40 @@
 <template>
-  <h1>{{ list.name }}</h1>
-  <div v-if="list && allMovies">
-    <MovieDisplayer v-for="movie in allMovies" :key="movie" :movie="movie"
-      @update-movie="(e) => updateMovieList(movie.id, e)"></MovieDisplayer>
+  <div class="d-flex flex-row">
+    <h1>{{ list.name }}</h1>
+    <v-spacer></v-spacer>
+    <v-btn :prepend-icon="'add'" @click="this.$router.push({ name: 'AddMovies' })" color="primary">Add
+      movies</v-btn>
   </div>
-  <v-btn :prepend-icon="'add'" @click="this.$router.push({ name: 'MovieCatalogView', params: { id: list.uuid } })">Add
-    movies</v-btn>
+  <div v-if="list && allMovies" style="flex:auto; overflow:auto;">
+    <MovieDisplayer v-for="movie in allMovies" :key="movie" :movie="movie">
+      <template #add-list> <v-checkbox v-model="movie.watched" hide-details
+          @update:modelValue="(e) => updateMovieList(movie.id, e)"></v-checkbox>
+      </template>
+    </MovieDisplayer>
+  </div>
+  <div v-if="this.$route.name == 'ListView'" class="d-flex justify-center pa-4" style="bottom:0px">
+    <PickButton :color="'red'" :shadowColor="'darkred'" :text="'Pick Movie'"
+      @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
+  </div>
 </template>
 <script>
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
+import PickButton from "@/components/reusable/PickButton.vue";
 import { fetchMovieDetails } from "@/scripts/fetchTest";
 export default {
   name: "ListDisplayer",
   props: ["list"],
   components: {
-    MovieDisplayer
+    MovieDisplayer,
+    PickButton
   },
   data() {
     return {
       allMovies: [],
     };
   },
-  async created() {
-    this.allMovies = await this.getMovieDetails();
+  async mounted() {
+    await this.getMovieDetails();
     console.debug(this.allMovies);
   },
   methods: {
@@ -30,24 +42,32 @@ export default {
       this.$emit("update-list", { dbid: movie, watched: watched });
     },
     async getMovieDetails() {
-      let allDetails = [];
-      Promise.all(this.list.movies.map(async (movie) => {
-        console.debug("Running fetch request");
-        const movieDetails = Promise.all([fetchMovieDetails(movie.dbid)]);
-        return movieDetails;
-      })).then(values => {
-        console.debug("Values", values);
-        values.map(v => {
-          allDetails.push(v[0]);
-        });
-      }).finally(() => {
-        console.debug(allDetails);
-        allDetails.map(d => { const listMovie = this.list.movies.find(m => m.dbid == d.id); d.watched = listMovie ? listMovie.watched : false; });
-        this.allMovies = allDetails;
+
+      const promises = this.list.movies.map(async (movie) => {
+        const moviePromise = await fetchMovieDetails(movie.dbid);
+        moviePromise.watched = movie.watched;
+        return moviePromise;
       });
+      Promise.all(promises).then(values => { console.debug("resulting values", values); this.allMovies = values; });
+    },
+  },
+  emits: ["update-list"],
+  watch: {
+    "list.movies.length": {
+      handler: async function () {
+        console.debug("length of movies has changed");
+        await this.getMovieDetails();
+      }
     }
   },
-  emits: ["update-list"]
+  computed: {
+    disabled() {
+      const watched = this.allMovies.filter(m => !m.watched).length;
+      const falsy = watched == 0 ? true : false;
+      console.debug("Watched?", watched, falsy);
+      return falsy;
+    }
+  }
 
 };
 </script>

@@ -1,11 +1,15 @@
 <template>
   <v-app>
-    <v-layout>
+    <v-layout style="max-height:100vh!important">
+      <v-app-bar>
+
+        <template v-slot:prepend>
+          <v-app-bar-nav-icon><home-button :routePath="'/'"></home-button></v-app-bar-nav-icon>
+        </template>
+
+        <v-app-bar-title>Movie Lottery</v-app-bar-title>
+      </v-app-bar>
       <v-main>
-        <v-app-bar>
-          <home-button :routePath="'/'"></home-button>
-          <h1>Movie Lottery</h1>
-        </v-app-bar>
         <router-view></router-view>
       </v-main>
     </v-layout>
@@ -15,7 +19,6 @@
 <script>
 import HomeButton from "./components/reusable/HomeButton.vue";
 import { useListStore } from "./stores/listsStore";
-import { testFetch } from "./scripts/fetchTest";
 export default {
   name: "App",
   components: {
@@ -23,7 +26,6 @@ export default {
   },
   async mounted() {
     await useListStore().queryAllLists();
-    await testFetch();
   }
 };
 </script>
