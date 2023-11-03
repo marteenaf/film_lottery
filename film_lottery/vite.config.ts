@@ -4,16 +4,17 @@ import vue from "@vitejs/plugin-vue";
 import path from "path";
 
 export default defineConfig({
-	plugins: [vue()],
-	resolve: {
-		alias: {
-			"@": path.resolve(__dirname, "/src"),
-		},
-	},
-	define: {
-		"process.env": {},
-	},
-	server:{
-		port:8080
-	}
+  plugins: [vue()],
+  envPrefix: "VITE_",
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "/src"),
+    },
+  },
+  define: {
+    "process.env": {},
+  },
+  server: {
+    port: 8080
+  }
 });

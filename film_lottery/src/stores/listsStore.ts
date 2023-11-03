@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { getLocalFile } from "@/scripts/Data IO/localQueries";
+import { getLists } from "@/scripts/Data IO/queries";
+
 import uuid4 from "uuid4";
 
 export const useListStore = defineStore("listStore", {
@@ -24,7 +26,8 @@ export const useListStore = defineStore("listStore", {
   },
   actions: {
     async queryAllLists() {
-      this.allLists = await getLocalFile("/src/local_data/lists.json") as List[];
+      //this.allLists = await getLocalFile("/src/local_data/lists.json") as List[];
+      this.allLists = await getLists() as List[];
     },
     setCurrentList(id) {
       console.debug("Setting list");
