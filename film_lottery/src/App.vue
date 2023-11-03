@@ -17,7 +17,6 @@
 <script>
 import HomeButton from "./components/reusable/HomeButton.vue";
 import { useListStore } from "./stores/listsStore";
-import { getBackend } from "./scripts/Data IO/axiosConnection";
 export default {
   name: "App",
   components: {
@@ -25,7 +24,6 @@ export default {
   },
   async mounted() {
     await useListStore().queryAllLists();
-    getBackend();
   }
 };
 </script>

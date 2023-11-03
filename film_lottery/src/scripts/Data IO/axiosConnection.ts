@@ -7,3 +7,9 @@ export function getBackend() {
     console.error("Error in getting backend", error);
   });
 }
+
+export async function getRequest(url) {
+  return axios.get(url)
+    .then((res) => { console.log("Response", res.status); return res.data; })
+    .catch(err => { console.error("Error with get request", err); });
+}
