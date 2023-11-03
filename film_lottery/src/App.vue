@@ -2,11 +2,9 @@
   <v-app>
     <v-layout style="max-height:100vh!important">
       <v-app-bar>
-
         <template v-slot:prepend>
           <v-app-bar-nav-icon><home-button :routePath="'/'"></home-button></v-app-bar-nav-icon>
         </template>
-
         <v-app-bar-title>Movie Lottery</v-app-bar-title>
       </v-app-bar>
       <v-main>
@@ -19,6 +17,7 @@
 <script>
 import HomeButton from "./components/reusable/HomeButton.vue";
 import { useListStore } from "./stores/listsStore";
+import { getBackend } from "./scripts/Data IO/axiosConnection";
 export default {
   name: "App",
   components: {
@@ -26,6 +25,7 @@ export default {
   },
   async mounted() {
     await useListStore().queryAllLists();
+    getBackend();
   }
 };
 </script>
