@@ -3,7 +3,7 @@
     <v-row style=" max-height:100% !important">
       <v-col :cols="cols" style="max-height:100% !important" class="d-flex flex-column">
         <ListDisplayer v-if="loaded && listStore.selectedList" :list="listStore.selectedList"
-          @update-list="(e) => updateListMovie(e)" :key="listStore.selectedList">
+          @update-list="(e) => updateListMovie(e)" :key="listStore.selectedList" @remove-movie="removeMovie">
         </ListDisplayer>
       </v-col>
       <v-col :cols="6" style="max-height:100% !important" class="d-flex flex-column">
@@ -47,6 +47,9 @@ export default {
     },
     pickMovie() {
       console.debug("Pick movie!");
+    },
+    removeMovie(id) {
+      this.listStore.removeMovie(id);
     }
   },
   computed: {
