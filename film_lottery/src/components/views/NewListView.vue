@@ -6,7 +6,7 @@
       <v-slider :min="1" :max="10" :step="1" show-ticks thumb-label :label="'Movies per user'"
         v-model="form.length"></v-slider>
       <v-combobox :items="userStore.allUsers" :item-title="'email'" multiple chips clearable v-model="form.users"
-        item-value="email" :rules="rules"></v-combobox>
+        item-value="email" :rules="rules" label="Users"></v-combobox>
       <v-btn type="submit" color="primary" variant="elevated">Create List</v-btn>
     </v-form>
   </v-container>

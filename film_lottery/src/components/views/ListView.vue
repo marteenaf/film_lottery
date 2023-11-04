@@ -50,6 +50,7 @@ export default {
     },
     removeMovie(id) {
       this.listStore.removeMovie(id);
+      this.listStore.patchSelectedListMovies();
     }
   },
   computed: {
