@@ -7,8 +7,12 @@
   </div>
   <div v-if="list && allMovies" style="flex:auto; overflow:auto;">
     <MovieDisplayer v-for="movie in allMovies" :key="movie" :movie="movie">
-      <template #add-list> <v-checkbox v-model="movie.watched" hide-details
-          @update:modelValue="(e) => updateMovieList(movie.id, e)"></v-checkbox>
+      <template #add-list>
+        <!--<v-checkbox v-model="movie.watched" hide-details
+          @update:modelValue="(e) => updateMovieList(movie.id, e)"></v-checkbox>-->
+        <v-icon class="ma-3" :icon="movie.watched ? 'done' : ''" color="primary"></v-icon>
+        <v-btn :icon="'remove'" @click="removeMovie(movie.id, movie.watched)" :color="'error'" variant="elevated"
+          :disabled="movie.watched" size="x-small"></v-btn>
       </template>
     </MovieDisplayer>
   </div>
@@ -50,8 +54,13 @@ export default {
       });
       Promise.all(promises).then(values => { console.debug("resulting values", values); this.allMovies = values; });
     },
+    removeMovie(id, watched) {
+      if (!watched) {
+        this.$emit("remove-movie", id);
+      }
+    }
   },
-  emits: ["update-list"],
+  emits: ["update-list", "remove-movie"],
   watch: {
     "list.movies.length": {
       handler: async function () {

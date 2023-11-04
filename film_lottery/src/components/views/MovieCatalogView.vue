@@ -5,7 +5,7 @@
   <div style="flex:auto; overflow:scroll;">
     <MovieDisplayer v-for="movie in movieList" :key="movie" :movie="movie">
       <template #add-list>
-        <v-btn :icon="inList[movie.id] ? 'check' : 'add'" @click="addToList(movie.id)"
+        <v-btn :icon="inList[movie.id] ? 'check' : 'add'" @click="updateList(movie.id, movie.watched)"
           :color="inList[movie.id] ? 'success' : 'primary'" variant="elevated"></v-btn>
       </template>
     </MovieDisplayer>
@@ -41,6 +41,24 @@ export default {
       this.listStore.addMovie(id);
       console.debug(this.listStore.selectedList);
       console.debug("Check in list", this.inList);
+    },
+    removeFromList(id) {
+      if (this.inList[id]) {
+        this.listStore.removeMovie(id);
+        this.inList[id] = false;
+      }
+
+      console.debug(this.listStore.selectedList);
+      console.debug("Check in list", this.inList);
+    },
+    updateList(id, watched) {
+      if (!watched) {
+        if (this.inList[id]) {
+          this.removeFromList(id);
+        } else {
+          this.addToList(id);
+        }
+      }
     },
     async patchList() {
       await this.listStore.patchSelectedListMovies();

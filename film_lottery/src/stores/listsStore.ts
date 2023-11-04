@@ -85,7 +85,22 @@ export const useListStore = defineStore("listStore", {
         return "No list selected";
       }
     },
+    removeMovie(movieId) {
+      const myList = this.selectedList;
 
+      if (myList) {
+        let index = -1;
+        const exists = myList.movies.find((m, i) => { index = i; return m.dbid == movieId; });
+        if (exists && index !== -1) {
+          myList.movies.splice(index, 1);
+          this.setCurrentList(myList.uuid);
+        } else {
+          return "This movie was already added to this list";
+        }
+      } else {
+        return "No list selected";
+      }
+    }
 
   }
 });
