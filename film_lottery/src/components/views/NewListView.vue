@@ -38,10 +38,10 @@ export default {
     console.table(this.userStore.allUsers);
   },
   methods: {
-    createNewList() {
+    async createNewList() {
       console.debug(this.form);
       const maxLength = this.form.length * this.form.users.length;
-      this.listStore.postNewList(this.form.name, maxLength, this.form.users.map(u => u.email));
+      await this.listStore.postNewList(this.form.name, maxLength, this.form.users.map(u => u.email));
       this.$router.push({ name: "ListView", params: { id: this.listStore.selectedList.uuid } });
 
     },
