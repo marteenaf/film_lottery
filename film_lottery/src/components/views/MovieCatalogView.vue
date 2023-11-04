@@ -10,8 +10,8 @@
       </template>
     </MovieDisplayer>
   </div>
-  <v-btn @click="this.$router.push({ name: 'ListView', params: { id: this.$route.params.id } })" color="primary"
-    class="mt-4">Done</v-btn>
+  <v-btn @click="() => { patchList(); this.$router.push({ name: 'ListView', params: { id: this.$route.params.id } }) }"
+    color="primary" class="mt-4">Done</v-btn>
 </template>
 <script>
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
@@ -42,6 +42,9 @@ export default {
       console.debug(this.listStore.selectedList);
       console.debug("Check in list", this.inList);
     },
+    async patchList() {
+      await this.listStore.patchSelectedListMovies();
+    }
   },
   watch: {
     async searchText(value) {
