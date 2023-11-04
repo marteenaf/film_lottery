@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
-import { getLocalFile } from "@/scripts/Data IO/localQueries";
+//import { getLocalFile } from "@/scripts/Data IO/localQueries";
+import { getLists, postList } from "../scripts/Data IO/queries";
+
 import uuid4 from "uuid4";
+import { updateList } from "../scripts/Data IO/queries";
 
 export const useListStore = defineStore("listStore", {
   state: () => {
@@ -24,7 +27,8 @@ export const useListStore = defineStore("listStore", {
   },
   actions: {
     async queryAllLists() {
-      this.allLists = await getLocalFile("/src/local_data/lists.json") as List[];
+      //this.allLists = await getLocalFile("/src/local_data/lists.json") as List[];
+      this.allLists = await getLists() as List[];
     },
     setCurrentList(id) {
       console.debug("Setting list");
@@ -46,13 +50,21 @@ export const useListStore = defineStore("listStore", {
 
       //here we post?
       this.allLists.push(newList);
+      await postList([newList]);
       this.setCurrentList(uuid);
       console.debug("[POST] New List", newList, this.selectedList);
       console.debug(this.allLists);
     },
+    async patchSelectedListMovies() {
+      const id = this.selectedList.uuid;
+      const doc = { movies: this.selectedList.movies };
+      console.log("movies to update", id, doc);
+      await updateList(id, doc);
+    },
     updateCurrentListMovie(object) {
-      console.debug(object),
-        this.selectedList.movies.find(m => m.dbid == object.dbid).watched = object.watched;
+      console.debug("movie watched!", object);
+      this.selectedList.movies.find(m => m.dbid == object.dbid).watched = object.watched;
+      this.patchSelectedListMovies();
     },
     addMovie(movieId) {
       const myList = this.selectedList;
@@ -73,6 +85,7 @@ export const useListStore = defineStore("listStore", {
         return "No list selected";
       }
     },
+
 
   }
 });
