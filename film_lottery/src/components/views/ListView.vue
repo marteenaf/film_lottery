@@ -12,7 +12,7 @@
     </v-row>
   </v-container>
 </template>
-<script>
+<script lang="ts">
 import { useListStore } from "@/stores/listsStore";
 import ListDisplayer from "../custom/ListDisplayer.vue";
 export default {
