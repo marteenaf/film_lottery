@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 //import { getLocalFile } from "@/scripts/Data IO/localQueries";
 import { getLists, postList } from "../scripts/Data IO/queries";
-
 import uuid4 from "uuid4";
 import { updateList } from "../scripts/Data IO/queries";
+import { useUserStore } from "./usersStore";
 
 export const useListStore = defineStore("listStore", {
   state: () => {
@@ -23,6 +23,10 @@ export const useListStore = defineStore("listStore", {
       } else {
         return [];
       }
+    },
+    getUsersLists() {
+      const user = useUserStore().getUser;
+      return this.allLists.filter(l => l.createdBy == user || l.users.includes(user));
     }
   },
   actions: {

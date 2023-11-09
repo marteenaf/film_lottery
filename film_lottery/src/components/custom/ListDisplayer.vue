@@ -21,7 +21,7 @@
       @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
   </div>
 </template>
-<script>
+<script lang="ts">
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
 import PickButton from "@/components/reusable/PickButton.vue";
 import { fetchMovieDetails } from "@/scripts/fetchTest";
