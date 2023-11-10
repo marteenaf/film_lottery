@@ -3,7 +3,7 @@
     <v-row class="auto">
       <v-col>
         <v-list lines="two">
-          <v-list-item v-for="list in listStore.getUsersLists" :key="list" :title="list.name"
+          <v-list-item v-for="list in listStore.allLists" :key="list" :title="list.name"
             :subtitle="list.movies.length + '/' + list.maxLength" active-color="primary" :value="list.uuid"
             @click="viewList(list.uuid)"
             :prepend-icon="list.createdBy == user ? 'manage_accounts' : 'movie'"></v-list-item>
@@ -33,13 +33,12 @@ export default {
     };
   },
   async created() {
-    await this.listStore.queryAllLists();
+    await this.listStore.queryListsByUsers();
     console.table(this.listStore.allLists);
 
   },
   mounted() {
     console.debug("[Home View] Mounting...", this.user);
-    console.table(this.listStore.allLists);
   },
   methods: {
     viewList(value) {
