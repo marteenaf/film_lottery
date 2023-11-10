@@ -5,8 +5,40 @@ export async function getLists() {
   const url = `${baseUrl}/mongo/api/${mongoDatabase}/${mongoListsCollection}`;
   const response = await getRequest(url);
   console.log(response);
-  if (response && response.data) {
+  if (response && response.data && !response.data.error) {
     return response.data;
+  } else {
+    return [];
+  }
+}
+
+export async function getListsByUser(user) {
+  const agg = [
+    {
+      "$match": {
+        "$expr": {
+          "$or": [
+            {
+              "$in": [
+                "test@gmail.com", "$users"
+              ]
+            }, {
+              "$eq": [
+                "$createdBy", "test@gmail.com"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ];
+  const url = `${baseUrl}/mongo/api/${mongoDatabase}/${mongoListsCollection}/aggregate?pipeline=${JSON.stringify(agg)}`;
+  const response = await getRequest(url);
+  console.log(response);
+  if (response && response.data && !response.data.error) {
+    return response.data;
+  } else {
+    return [];
   }
 }
 
