@@ -105,6 +105,17 @@ export const useListStore = defineStore("listStore", {
       } else {
         return "No list selected";
       }
+    },
+    checkSelectedListAuth(id, user) {
+
+      const list = this.allLists.find(list => list.uuid == id);
+
+      if (list) {
+        if (list.createdBy == user || list.users.includes(user)) {
+          return true;
+        }
+      }
+      return false;
     }
 
   }

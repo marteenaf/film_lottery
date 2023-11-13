@@ -9,7 +9,7 @@ export function setToken(myToken) {
 export function setHeaders() {
   return {
     "Content-Type": "application/json",
-    "auth-token": token
+    "Authorization": `Bearer ${token}`
   };
 }
 
@@ -23,7 +23,8 @@ export function getBackend() {
 
 export async function getRequest(url: string) {
   const promise = axios.get(url, {
-    headers: setHeaders()
+    headers: setHeaders(),
+    withCredentials: true
   })
     .then((res) => { console.log("Front-end GET response status:", res.status); return res; })
     .catch(err => { console.error("Front-end: Error with get request", err); return err.response; });
@@ -34,7 +35,8 @@ export async function getRequest(url: string) {
 export async function postRequest(url: string, body: object) {
 
   const promise = axios.post(`${url}`, body, {
-    headers: setHeaders()
+    headers: setHeaders(),
+    withCredentials: true
   }).then((res) => { console.log("Front-end POST response status:", res.status); return res; })
     .catch(err => { console.error("Front-end: Error with get request", err); return err.response; });
 
@@ -49,7 +51,8 @@ export async function patchByUuidRequest(url: string, uuid: string, newDocument:
   };
 
   const promise = axios.patch(`${url}`, body, {
-    headers: setHeaders()
+    headers: setHeaders(),
+    withCredentials: true
   }).then(res => { console.log("Front-end PATCH response status:", res.status); return res; })
     .catch(err => { console.error("Front-end: Error with get request", err); return err.response; });
 

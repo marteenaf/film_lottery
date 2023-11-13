@@ -25,12 +25,16 @@ export const useUserStore = defineStore("userStore", {
       const url = `${baseUrl}/auth/register`;
       const response = await postRequest(url, user);
       return response;
-
     },
     startSession(response) {
       this.currentUser = response.user;
       this.isAuthenticated = response.isAuthenticated;
       setToken(response.token);
+    },
+    endSession() {
+      this.currentUser = "";
+      this.isAuthenticated = false;
+      setToken("");
     },
     async loginUser(user) {
       const url = `${baseUrl}/auth/login`;
@@ -39,8 +43,26 @@ export const useUserStore = defineStore("userStore", {
       return response;
     },
     async logoutUser() {
-      this.currentUser = "";
-      this.isAuthenticated = false;
+      const url = `${baseUrl}/auth/logout`;
+      const response = await postRequest(url, {});
+      this.endSession();
+      return response;
+    },
+    async refresh() {
+      try {
+        const url = `${baseUrl}/auth/refresh`;
+        const response = await postRequest(url, {});
+        console.debug("Refreshing", response);
+        if (response.status >= 200 && response.status < 400) {
+          this.startSession(response.data);
+        } else {
+          this.endSession();
+        }
+        return response;
+
+      } catch (error) {
+        throw error.message;
+      }
     }
   }
 });

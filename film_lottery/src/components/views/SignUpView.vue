@@ -1,9 +1,10 @@
 <template>
   <h1>Sign up here</h1>
   <v-form v-model="valid" @submit.prevent="validateForm" validate-on="submit">
-    <v-text-field v-model="user.email" label="Email" :rules="emailRules"></v-text-field>
+    <v-text-field v-model="user.email" label="Email" :rules="emailRules" autocomplete="email"></v-text-field>
     <!--<v-text-field prefix="@" v-model="handle" label="Handle" :rules="passwordRules"></v-text-field>-->
-    <v-text-field type="password" v-model="user.password" label="Password" :rules="passwordRules"></v-text-field>
+    <v-text-field type="password" v-model="user.password" label="Password" :rules="passwordRules"
+      autocomplete="new-password"></v-text-field>
     <v-alert v-if="response" :type="alertType" :title="alertTitle" :text="alertMessage"></v-alert>
     <v-btn class="ma-3" type="submit" color="primary">Sign-up</v-btn>
     <v-btn variant="text" class="text-decoration-underline" color="primary"
