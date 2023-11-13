@@ -1,8 +1,8 @@
 <template>
   <h1>Login here</h1>
   <v-form v-model="valid" @submit.prevent="validateForm" validate-on="submit">
-    <v-text-field v-model="user.email" label="Email"></v-text-field>
-    <v-text-field type="password" v-model="user.password" label="Password"></v-text-field>
+    <v-text-field v-model="user.email" label="Email" autocomplete="email"></v-text-field>
+    <v-text-field type="password" v-model="user.password" label="Password" autocomplete="current-password"></v-text-field>
     <v-alert v-if="response" :type="alertType" :title="alertTitle" :text="alertMessage"></v-alert>
     <v-btn class="ma-3" type="submit" color="primary">Log-in</v-btn>
     <v-btn variant="text" class="text-decoration-underline" color="primary"
