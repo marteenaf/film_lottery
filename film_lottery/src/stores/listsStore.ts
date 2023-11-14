@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 //import { getLocalFile } from "@/scripts/Data IO/localQueries";
-import { getLists, postList } from "../scripts/Data IO/queries";
-
+import { getLists, postList, getListsByUser } from "../scripts/Data IO/queries";
 import uuid4 from "uuid4";
 import { updateList } from "../scripts/Data IO/queries";
+import { useUserStore } from "./usersStore";
 
 export const useListStore = defineStore("listStore", {
   state: () => {
@@ -23,13 +23,18 @@ export const useListStore = defineStore("listStore", {
       } else {
         return [];
       }
-    }
+    },
   },
   actions: {
-    async queryAllLists() {
+    async queryListsByUsers() {
       //this.allLists = await getLocalFile("/src/local_data/lists.json") as List[];
+      const user = useUserStore().getUser;
+      this.allLists = await getListsByUser(user) as List[];
+    },
+    async queryAllLists() {
       this.allLists = await getLists() as List[];
     },
+
     setCurrentList(id) {
       console.debug("Setting list");
       if (this.allLists.length > 0) {
@@ -100,6 +105,17 @@ export const useListStore = defineStore("listStore", {
       } else {
         return "No list selected";
       }
+    },
+    checkSelectedListAuth(id, user) {
+
+      const list = this.allLists.find(list => list.uuid == id);
+
+      if (list) {
+        if (list.createdBy == user || list.users.includes(user)) {
+          return true;
+        }
+      }
+      return false;
     }
 
   }

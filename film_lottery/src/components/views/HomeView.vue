@@ -5,7 +5,8 @@
         <v-list lines="two">
           <v-list-item v-for="list in listStore.allLists" :key="list" :title="list.name"
             :subtitle="list.movies.length + '/' + list.maxLength" active-color="primary" :value="list.uuid"
-            @click="viewList(list.uuid)"></v-list-item>
+            @click="viewList(list.uuid)"
+            :prepend-icon="list.createdBy == user ? 'manage_accounts' : 'movie'"></v-list-item>
         </v-list>
       </v-col>
     </v-row>
@@ -20,6 +21,7 @@
 </template>
 <script>
 import { useListStore } from "@/stores/listsStore";
+import { useUserStore } from "@/stores/usersStore";
 export default {
   name: "HomeView",
   components: {
@@ -27,17 +29,22 @@ export default {
   data() {
     return {
       listStore: useListStore(),
+      user: useUserStore().getUser,
     };
   },
-  mounted() {
-    console.debug("[Home View] Mounting...");
+  async created() {
+    await this.listStore.queryListsByUsers();
     console.table(this.listStore.allLists);
+
+  },
+  mounted() {
+    console.debug("[Home View] Mounting...", this.user);
   },
   methods: {
     viewList(value) {
       this.$router.push({ name: "ListView", params: { id: value } });
     }
-  }
+  },
 };
 </script>
 <style scoped>

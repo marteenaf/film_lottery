@@ -1,10 +1,10 @@
-import { MOVIE_API_KEY } from "./envVariables";
+import { movieDbKey } from "./Data IO/envVariables";
 
 const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NjRkZDE4ZDBiMzUxMTdlNDRlNjUyYzM3ZjM2ZGZiNCIsInN1YiI6IjY0MjA3ZWQ0NmEzNDQ4MDExMmI5OTI0ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mbMLKnJR238DudAFMBYZhQk4O7xRakE9Fv4ADE8P2BY"
+    Authorization: "Bearer " + movieDbKey
   }
 };
 
