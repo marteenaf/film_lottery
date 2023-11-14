@@ -17,6 +17,7 @@
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
 import { searchMovies } from "@/scripts/fetchTest";
 import { useListStore } from "@/stores/listsStore";
+import { useUserStore } from "@/stores/usersStore";
 
 export default {
   name: "MovieCatalog",
@@ -28,6 +29,7 @@ export default {
       movieList: [],
       searchText: "",
       listStore: useListStore(),
+      userStore: useUserStore(),
       inList: {},
     };
   },
@@ -35,12 +37,13 @@ export default {
     addToList(id) {
       console.assert(this.listStore.selectedList.movies.length <= this.listStore.selectedList.maxLength, "there are too many movies");
       console.debug(this.listStore.selectedList.movies.length, "<=", this.listStore.selectedList.maxLength);
-      if (this.listStore.selectedList.movies.length < this.listStore.selectedList.maxLength) {
+      if (this.listStore.checkUserCanAddMovies && this.listStore.selectedList.movies.length < this.listStore.selectedList.maxLength) {
         this.inList[id] = true;
+        this.listStore.addMovie(id, this.userStore.getUser);
+        console.debug(this.listStore.selectedList);
+        console.debug("Check in list", this.inList);
       }
-      this.listStore.addMovie(id);
-      console.debug(this.listStore.selectedList);
-      console.debug("Check in list", this.inList);
+
     },
     removeFromList(id) {
       if (this.inList[id]) {
