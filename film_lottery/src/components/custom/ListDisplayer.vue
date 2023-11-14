@@ -1,9 +1,8 @@
 <template>
-  <div class="d-flex flex-row">
-    <h1>{{ list.name }}</h1>
-    <v-spacer></v-spacer>
-    <v-btn :prepend-icon="'add'" @click="this.$router.push({ name: 'AddMovies' })" color="primary">Add
-      movies</v-btn>
+  <div>
+    <ListProgressBar :barHeight="30" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
+      :value="watchedMovies">
+    </ListProgressBar>
   </div>
   <div v-if="list && allMovies" style="flex:auto; overflow:auto;">
     <MovieDisplayer v-for="movie in allMovies" :key="movie" :movie="movie">
@@ -24,13 +23,15 @@
 <script lang="ts">
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
 import PickButton from "@/components/reusable/PickButton.vue";
+import ListProgressBar from "@/components/custom/ListProgressBar.vue";
 import { fetchMovieDetails } from "@/scripts/fetchTest";
 export default {
   name: "ListDisplayer",
   props: ["list", "user"],
   components: {
     MovieDisplayer,
-    PickButton
+    PickButton,
+    ListProgressBar
   },
   data() {
     return {
@@ -87,6 +88,9 @@ export default {
       const falsy = watched == 0 ? true : false;
       console.debug("Watched?", watched, falsy);
       return falsy;
+    },
+    watchedMovies() {
+      return this.list.movies.filter(m => m.watched).length;
     }
   }
 
