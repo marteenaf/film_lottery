@@ -1,6 +1,6 @@
 <template>
   <h1>Movie catalog</h1>
-  <v-text-field :append-icon="'search'" :label="'Search for movies'" v-model="searchText" clearable
+  <v-text-field :append-inner-icon="'search'" :label="'Search for movies'" v-model="searchText" clearable
     style="max-height:80px !important"></v-text-field>
   <div style="flex:auto; overflow:scroll;">
     <MovieDisplayer v-for="movie in movieList" :key="movie" :movie="movie">

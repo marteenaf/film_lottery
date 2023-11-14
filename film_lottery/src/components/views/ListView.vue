@@ -1,19 +1,14 @@
 <template>
   <v-container style="max-height:100% !important" class="d-flex">
     <v-row style=" max-height:100% !important">
-      <v-col :cols="cols" style="max-height:100% !important" class="d-flex flex-column">
-        <div class="d-flex flex-row">
-          <h1>{{ list.name }}</h1>
-          <v-spacer></v-spacer>
-          <v-btn v-if="!this.$route.path.includes('add')" :prepend-icon="'add'"
-            @click="this.$router.push({ name: 'AddMovies' })" color="primary">Add
-            movies</v-btn>
-        </div>
-        <ListDisplayer v-if="authorised && loaded && listStore.selectedList" :list="listStore.selectedList"
-          @update-list="(e) => updateListMovie(e)" :key="listStore.selectedList" @remove-movie="removeMovie"
-          :user="userStore.getUser">
+      <v-col v-if="authorised && loaded && listStore.selectedList" :cols="cols" style="max-height:100% !important"
+        class="d-flex flex-column">
+        <ListDisplayer :list="listStore.selectedList" @update-list="(e) => updateListMovie(e)"
+          :key="listStore.selectedList" @remove-movie="removeMovie" :user="userStore.getUser">
         </ListDisplayer>
-        <v-alert v-else type="error" title="Not authorised">This list cannot be accessed by the current user!</v-alert>
+      </v-col>
+      <v-col v-else :cols="12">
+        <v-alert type="error" title="Not authorised">This list cannot be accessed by the current user!</v-alert>
       </v-col>
       <v-col :cols="6" style="max-height:100% !important" class="d-flex flex-column">
         <router-view></router-view>

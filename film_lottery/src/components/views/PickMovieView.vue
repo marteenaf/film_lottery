@@ -1,11 +1,21 @@
 <template>
-  <v-container>
-    <h1>Pick Movie</h1>
-    <h1>Movie is: {{ selectedMovie ? selectedMovie.title : "No movie" }}</h1>
-    <PickButton :text="'Pick Again'" :color="'red'" :shadowColor="'darkred'" @pick="pickMovie" :disabled="disabled">
-    </PickButton>
-    <PickButton :text="'Watch Movie'" :color="'green'" :shadowColor="'darkgreen'" @pick="watchMovie" :disabled="disabled">
-    </PickButton>
+  <v-container class="d-flex flex-column pb-15" style="height:100%">
+    <v-row class="flex-grow-0 mb-12">
+      <v-col>
+        <h1 class="text-center">{{ selectedMovie ? selectedMovie.title : "No movie" }}</h1>
+      </v-col>
+    </v-row>
+    <v-row class="flex-grow-0">
+      <v-col align="center">
+        <PickButton :text="'Pick Again'" :color="'red'" :shadowColor="'darkred'" @pick="pickMovie" :disabled="disabled">
+        </PickButton>
+      </v-col>
+      <v-col align="center">
+        <PickButton :text="'Watch Movie'" :color="'green'" :shadowColor="'darkgreen'" @pick="watchMovie"
+          :disabled="disabled">
+        </PickButton>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
