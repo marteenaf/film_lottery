@@ -1,4 +1,11 @@
 <template>
+  <div class="d-flex flex-row">
+    <h1>{{ list.name }}</h1>
+    <v-spacer></v-spacer>
+    <v-btn v-if="!this.$route.path.includes('add')" :prepend-icon="'add'"
+      @click="this.$router.push({ name: 'AddMovies' })" color="primary">Add
+      movies</v-btn>
+  </div>
   <div>
     <ListProgressBar :barHeight="30" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
       :value="watchedMovies">
