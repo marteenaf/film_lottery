@@ -24,6 +24,19 @@ export const useListStore = defineStore("listStore", {
         return [];
       }
     },
+    checkUserCanAddMovies() {
+      // return true or false to check if current user can add movies
+      if (this.selectedList && this.selectedList.movies && this.selectedList.users) {
+        const users = this.selectedList.users.length + 1;
+        const currentUser = useUserStore().getUser;
+        if (currentUser) {
+          const addedMovies = this.selectedList.movies.filter(m => m.addedBy == currentUser).length;
+          const max = Math.floor(this.selectedList.maxLength / users);
+          return addedMovies < max;
+        }
+      }
+      return false;
+    }
   },
   actions: {
     async queryListsByUsers() {
@@ -34,7 +47,6 @@ export const useListStore = defineStore("listStore", {
     async queryAllLists() {
       this.allLists = await getLists() as List[];
     },
-
     setCurrentList(id) {
       console.debug("Setting list");
       if (this.allLists.length > 0) {
@@ -71,14 +83,13 @@ export const useListStore = defineStore("listStore", {
       this.selectedList.movies.find(m => m.dbid == object.dbid).watched = object.watched;
       this.patchSelectedListMovies();
     },
-    addMovie(movieId) {
+    addMovie(movieId, user) {
       const myList = this.selectedList;
-
       if (myList) {
         const exists = myList.movies.filter(m => m.dbid == movieId);
         if (exists.length == 0) {
           if (myList.movies.length < myList.maxLength) {
-            myList.movies.push({ dbid: movieId, watched: false });
+            myList.movies.push({ dbid: movieId, watched: false, addedBy: user });
             this.setCurrentList(myList.uuid);
           } else {
             return "You have already filled all slots in this list";
@@ -133,6 +144,7 @@ interface List {
 
 interface Movie {
   dbid: number,
-  watched: boolean
+  watched: boolean,
+  addedBy: string,
 
 }

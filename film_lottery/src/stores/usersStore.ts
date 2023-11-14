@@ -39,7 +39,6 @@ export const useUserStore = defineStore("userStore", {
     async loginUser(user) {
       const url = `${baseUrl}/auth/login`;
       const response = await postRequest(url, user);
-      this.startSession(response.data);
       return response;
     },
     async logoutUser() {
