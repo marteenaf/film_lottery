@@ -20,11 +20,11 @@ export async function getListsByUser(user) {
           "$or": [
             {
               "$in": [
-                "test@gmail.com", "$users"
+                user, "$users"
               ]
             }, {
               "$eq": [
-                "$createdBy", "test@gmail.com"
+                "$createdBy", user
               ]
             }
           ]

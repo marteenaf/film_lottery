@@ -42,8 +42,10 @@ export default {
             this.alertTitle = "Login Successful";
             this.alertMessage = response.data.message;
             setTimeout(() => {
+              this.userStore.startSession(response.data);
               this.$router.push({ name: "Home" });
-            }, 2000);
+              this.response = false;
+            }, 750);
           } else {
             this.alertType = "error";
             this.alertTitle = "Login Error";

@@ -7,6 +7,7 @@
         </template>
         <v-app-bar-title>Movie Lottery</v-app-bar-title>
         <template v-slot:append>
+          <p class="mr-3">{{ userStore.getUser }}</p>
           <v-app-bar-nav-icon icon="logout" @click="logout"></v-app-bar-nav-icon>
         </template>
       </v-app-bar>
