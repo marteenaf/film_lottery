@@ -1,12 +1,20 @@
 <template>
   <v-app>
-    <v-layout style="max-height:100vh!important">
+    <v-layout v-if="userStore.isAuthenticated" style="max-height:100vh!important">
       <v-app-bar>
         <template v-slot:prepend>
-          <v-app-bar-nav-icon><home-button :routePath="'/'"></home-button></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon><home-button :routePath="'/home'"></home-button></v-app-bar-nav-icon>
         </template>
         <v-app-bar-title>Movie Lottery</v-app-bar-title>
+        <template v-slot:append>
+          <v-app-bar-nav-icon icon="logout" @click="logout"></v-app-bar-nav-icon>
+        </template>
       </v-app-bar>
+      <v-main>
+        <router-view></router-view>
+      </v-main>
+    </v-layout>
+    <v-layout v-else>
       <v-main>
         <router-view></router-view>
       </v-main>
@@ -16,14 +24,22 @@
 
 <script>
 import HomeButton from "./components/reusable/HomeButton.vue";
-import { useListStore } from "./stores/listsStore";
+import { useUserStore } from "./stores/usersStore.ts";
 export default {
   name: "App",
   components: {
     HomeButton
   },
-  async mounted() {
-    await useListStore().queryAllLists();
+  data() {
+    return {
+      userStore: useUserStore()
+    };
+  },
+  methods: {
+    async logout() {
+      await this.userStore.logoutUser();
+      this.$router.push({ name: "LoginView" });
+    }
   }
 };
 </script>

@@ -21,7 +21,7 @@
       @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
   </div>
 </template>
-<script>
+<script lang="ts">
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
 import PickButton from "@/components/reusable/PickButton.vue";
 import { fetchMovieDetails } from "@/scripts/fetchTest";
@@ -38,6 +38,7 @@ export default {
     };
   },
   async mounted() {
+    //check the user is authorised to access this list.
     await this.getMovieDetails();
     console.debug(this.allMovies);
   },
@@ -47,12 +48,14 @@ export default {
     },
     async getMovieDetails() {
 
-      const promises = this.list.movies.map(async (movie) => {
-        const moviePromise = await fetchMovieDetails(movie.dbid);
-        moviePromise.watched = movie.watched;
-        return moviePromise;
-      });
-      Promise.all(promises).then(values => { console.debug("resulting values", values); this.allMovies = values; });
+      if (this.list.movies) {
+        const promises = this.list.movies.map(async (movie) => {
+          const moviePromise = await fetchMovieDetails(movie.dbid);
+          moviePromise.watched = movie.watched;
+          return moviePromise;
+        });
+        Promise.all(promises).then(values => { console.debug("resulting values", values); this.allMovies = values; });
+      }
     },
     removeMovie(id, watched) {
       if (!watched) {
