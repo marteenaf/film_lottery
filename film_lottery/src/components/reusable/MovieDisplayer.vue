@@ -3,6 +3,7 @@
     <v-card-item style="flex:auto !important">
       <v-card-title :class="movie.watched ? 'watched' : ''" style="text-wrap:wrap">{{ movieTitle }}</v-card-title>
       <v-card-subtitle>{{ releaseYear }}</v-card-subtitle>
+      <v-card-subtitle>{{ addedBy }}</v-card-subtitle>
     </v-card-item>
     <v-spacer></v-spacer>
     <v-card-item>{{ movie.watched ? "Watched" : "" }}</v-card-item>
@@ -24,6 +25,9 @@ export default {
     },
     releaseYear() {
       return this.movie.release_date.split("-")[0];
+    },
+    addedBy() {
+      return this.movie.addedBy ? this.movie.addedBy : "";
     }
   }
 };

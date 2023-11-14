@@ -3,7 +3,8 @@
     <v-row style=" max-height:100% !important">
       <v-col :cols="cols" style="max-height:100% !important" class="d-flex flex-column">
         <ListDisplayer v-if="authorised && loaded && listStore.selectedList" :list="listStore.selectedList"
-          @update-list="(e) => updateListMovie(e)" :key="listStore.selectedList" @remove-movie="removeMovie">
+          @update-list="(e) => updateListMovie(e)" :key="listStore.selectedList" @remove-movie="removeMovie"
+          :user="userStore.getUser">
         </ListDisplayer>
         <v-alert v-else type="error" title="Not authorised">This list cannot be accessed by the current user!</v-alert>
       </v-col>

@@ -12,7 +12,7 @@
           @update:modelValue="(e) => updateMovieList(movie.id, e)"></v-checkbox>-->
         <v-icon class="ma-3" :icon="movie.watched ? 'done' : ''" color="primary"></v-icon>
         <v-btn :icon="'remove'" @click="removeMovie(movie.id, movie.watched)" :color="'error'" variant="elevated"
-          :disabled="movie.watched" size="x-small"></v-btn>
+          :disabled="movie.watched || !addedByUser(movie.id)" size="x-small"></v-btn>
       </template>
     </MovieDisplayer>
   </div>
@@ -27,7 +27,7 @@ import PickButton from "@/components/reusable/PickButton.vue";
 import { fetchMovieDetails } from "@/scripts/fetchTest";
 export default {
   name: "ListDisplayer",
-  props: ["list"],
+  props: ["list", "user"],
   components: {
     MovieDisplayer,
     PickButton
@@ -52,6 +52,7 @@ export default {
         const promises = this.list.movies.map(async (movie) => {
           const moviePromise = await fetchMovieDetails(movie.dbid);
           moviePromise.watched = movie.watched;
+          moviePromise.addedBy = movie.addedBy;
           return moviePromise;
         });
         Promise.all(promises).then(values => { console.debug("resulting values", values); this.allMovies = values; });
@@ -61,6 +62,14 @@ export default {
       if (!watched) {
         this.$emit("remove-movie", id);
       }
+    },
+    addedByUser(movieId) {
+      const movie = this.allMovies.find(m => m.id == movieId);
+      if (movie) {
+        console.debug("user", this.user);
+        return this.user == movie.addedBy;
+      }
+      return false;
     }
   },
   emits: ["update-list", "remove-movie"],
