@@ -1,13 +1,10 @@
 <template>
-  <v-container class="wrapper d-flex flex-column">
-    <v-row class="auto">
+  <MainLayout>
+    <template #content>
       <v-col>
         <div class="d-flex flex-row">
           <h1>My Lists</h1>
           <v-spacer></v-spacer>
-          <v-btn :prepend-icon="'add'" color="primary" variant="elevated"
-            @click="this.$router.push({ name: 'NewListView' })">Add
-            new list</v-btn>
         </div>
         <v-list lines="two">
           <v-list-item v-for="list in listStore.allLists" :key="list" :title="list.name" active-color="primary"
@@ -21,17 +18,25 @@
           </v-list-item>
         </v-list>
       </v-col>
-    </v-row>
-  </v-container>
+    </template>
+    <template #fab>
+      <v-col align="center">
+        <v-btn size="large" icon color="primary"
+          @click="this.$router.push({ name: 'NewListView' })"><v-icon>add</v-icon></v-btn>
+      </v-col>
+    </template>
+  </MainLayout>
 </template>
 <script>
 import ListProgressBar from "@/components/custom/ListProgressBar.vue";
+import MainLayout from "@/components/layouts/MainLayout.vue";
 import { useListStore } from "@/stores/listsStore";
 import { useUserStore } from "@/stores/usersStore";
 export default {
   name: "HomeView",
   components: {
-    ListProgressBar
+    ListProgressBar,
+    MainLayout
   },
   data() {
     return {
@@ -55,14 +60,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-.wrapper {
-  height: 100% !important;
-  max-height: 100% !important;
-}
-
-.auto {
-  flex: auto;
-  overflow: auto;
-}
-</style>
+<style scoped></style>
