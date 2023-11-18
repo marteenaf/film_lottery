@@ -1,44 +1,55 @@
 <template>
-  <div class="d-flex flex-row">
-    <h1>{{ list.name }}</h1>
-    <v-spacer></v-spacer>
-    <v-btn v-if="!this.$route.path.includes('add')" :prepend-icon="'add'"
-      @click="this.$router.push({ name: 'AddMovies' })" color="primary">Add
-      movies</v-btn>
-  </div>
-  <div>
-    <ListProgressBar :barHeight="30" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
-      :value="watchedMovies">
-    </ListProgressBar>
-  </div>
-  <div v-if="list && allMovies" style="flex:auto; overflow:auto;">
-    <MovieDisplayer v-for="movie in allMovies" :key="movie" :movie="movie">
-      <template #add-list>
-        <!--<v-checkbox v-model="movie.watched" hide-details
+  <MainLayout>
+    <template #header>
+      <v-col>
+        <div class="pb-5 d-flex" align="center">
+          <h2 class="text-left">{{ list.name }}</h2>
+          <v-spacer></v-spacer>
+          <PickButton :color="'red'" :shadowColor="'darkred'" :text="'Pick Movie'"
+            @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
+        </div>
+        <ListProgressBar :barHeight="30" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
+          :value="watchedMovies">
+        </ListProgressBar>
+      </v-col>
+    </template>
+    <template #content>
+      <v-col>
+        <div v-if="list && allMovies" style="flex:auto; overflow:auto;">
+          <MovieDisplayer v-for="movie in allMovies" :key="movie" :movie="movie">
+            <template #add-list>
+              <!--<v-checkbox v-model="movie.watched" hide-details
           @update:modelValue="(e) => updateMovieList(movie.id, e)"></v-checkbox>-->
-        <v-icon class="ma-3" :icon="movie.watched ? 'done' : ''" color="primary"></v-icon>
-        <v-btn :icon="'remove'" @click="removeMovie(movie.id, movie.watched)" :color="'error'" variant="elevated"
-          :disabled="movie.watched || !addedByUser(movie.id)" size="x-small"></v-btn>
-      </template>
-    </MovieDisplayer>
-  </div>
-  <div v-if="this.$route.name == 'ListView'" class="d-flex justify-center pa-4" style="bottom:0px">
-    <PickButton :color="'red'" :shadowColor="'darkred'" :text="'Pick Movie'"
-      @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
-  </div>
+              <v-icon class="ma-3" :icon="movie.watched ? 'done' : ''" color="primary"></v-icon>
+              <v-btn :icon="'remove'" @click="removeMovie(movie.id, movie.watched)" :color="'error'" variant="elevated"
+                :disabled="movie.watched || !addedByUser(movie.id)" size="x-small"></v-btn>
+            </template>
+          </MovieDisplayer>
+        </div>
+      </v-col>
+    </template>
+    <template #fab v-if="!this.$route.path.includes('add')">
+      <v-col align="center">
+        <v-btn v-if="!this.$route.path.includes('add')" :icon="'add'" @click="this.$router.push({ name: 'AddMovies' })"
+          color="primary" size="large"></v-btn>
+      </v-col>
+    </template>
+  </MainLayout>
 </template>
 <script lang="ts">
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
-import PickButton from "@/components/reusable/PickButton.vue";
 import ListProgressBar from "@/components/custom/ListProgressBar.vue";
+import PickButton from "@/components/reusable/PickButton.vue";
+import MainLayout from "@/components/layouts/MainLayout.vue";
 import { fetchMovieDetails } from "@/scripts/fetchTest";
 export default {
   name: "ListDisplayer",
   props: ["list", "user"],
   components: {
     MovieDisplayer,
+    ListProgressBar,
     PickButton,
-    ListProgressBar
+    MainLayout
   },
   data() {
     return {

@@ -9,13 +9,21 @@ import { createRouter, createWebHashHistory, RouteRecordRaw, START_LOCATION } fr
 import { useUserStore } from "@/stores/usersStore";
 
 const routes: RouteRecordRaw[] = [
+
+  {
+    path: "/",
+    redirect: "/login",
+    meta: {
+      requiresAuth: true
+    }
+  },
   {
     path: "/home",
     name: "Home",
     component: HomeView,
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     path: "/list/:id",

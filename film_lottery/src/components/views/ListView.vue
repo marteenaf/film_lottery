@@ -1,20 +1,10 @@
 <template>
-  <v-container style="max-height:100% !important" class="d-flex">
-    <v-row style=" max-height:100% !important">
-      <v-col v-if="authorised && loaded && listStore.selectedList" :cols="cols" style="max-height:100% !important"
-        class="d-flex flex-column">
-        <ListDisplayer :list="listStore.selectedList" @update-list="(e) => updateListMovie(e)"
-          :key="listStore.selectedList" @remove-movie="removeMovie" :user="userStore.getUser">
-        </ListDisplayer>
-      </v-col>
-      <v-col v-else :cols="12">
-        <v-alert type="error" title="Not authorised">This list cannot be accessed by the current user!</v-alert>
-      </v-col>
-      <v-col :cols="6" style="max-height:100% !important" class="d-flex flex-column">
-        <router-view></router-view>
-      </v-col>
-    </v-row>
-  </v-container>
+  <ListDisplayer v-if="authorised && mounted" :list="listStore.selectedList" @update-list="(e) => updateListMovie(e)"
+    :key="listStore.selectedList" @remove-movie="removeMovie" :user="userStore.getUser">
+  </ListDisplayer>
+  <v-alert v-if="!authorised" type="error" title="Not authorised">This list cannot be accessed by the current
+    user!</v-alert>
+  <router-view></router-view>
 </template>
 <script lang="ts">
 import { useListStore } from "@/stores/listsStore";
@@ -32,11 +22,13 @@ export default {
       userStore: useUserStore(),
       loaded: false,
       authorised: false,
+      mounted: false,
     };
   },
   async mounted() {
     console.debug("[List View] Mounting...", this.$route, this.id);
     await this.getListFromUrl();
+    this.mounted = true;
 
   },
   methods: {
@@ -74,6 +66,12 @@ export default {
       } else {
         return 6;
       }
+    },
+    disabled() {
+      const watched = this.listStore.selectedList && this.listStore.selectedList.movies.filter(m => !m.watched).length;
+      const falsy = watched == 0 ? true : false;
+      console.debug("Watched?", watched, falsy);
+      return falsy;
     }
   },
 };
