@@ -41,6 +41,15 @@ export default {
       await this.userStore.logoutUser();
       this.$router.push({ name: "LoginView" });
     }
+  },
+  computed: {
+    homeIcon() {
+      let icon = "home";
+      if (!this.$route.path.includes("home")) {
+        icon = "view_list";
+      }
+      return icon;
+    }
   }
 };
 </script>

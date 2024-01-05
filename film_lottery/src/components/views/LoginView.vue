@@ -1,18 +1,29 @@
 <template>
-  <h1>Login here</h1>
-  <v-form v-model="valid" @submit.prevent="validateForm" validate-on="submit">
-    <v-text-field v-model="user.email" label="Email" autocomplete="email"></v-text-field>
-    <v-text-field type="password" v-model="user.password" label="Password" autocomplete="current-password"></v-text-field>
-    <v-alert v-if="response" :type="alertType" :title="alertTitle" :text="alertMessage"></v-alert>
-    <v-btn class="ma-3" type="submit" color="primary">Log-in</v-btn>
-    <v-btn variant="text" class="text-decoration-underline" color="primary"
-      @click="this.$router.push('/sign-up')">Sign-up</v-btn>
-  </v-form>
+  <MainLayout :centered="true">
+    <template #header>
+      <h1>Login here</h1>
+    </template>
+    <template #content>
+      <v-form v-model="valid" @submit.prevent="validateForm" validate-on="submit">
+        <v-text-field v-model="user.email" label="Email" autocomplete="email"></v-text-field>
+        <v-text-field type="password" v-model="user.password" label="Password"
+          autocomplete="current-password"></v-text-field>
+        <v-alert v-if="response" :type="alertType" :title="alertTitle" :text="alertMessage"></v-alert>
+        <v-btn class="ma-3" type="submit" color="primary">Log-in</v-btn>
+        <v-btn variant="text" class="text-decoration-underline" color="primary"
+          @click="this.$router.push('/sign-up')">Sign-up</v-btn>
+      </v-form>
+    </template>
+  </MainLayout>
 </template>
 <script lang="ts">
+import MainLayout from "@/components/layouts/MainLayout.vue";
 import { useUserStore } from "@/stores/usersStore";
 export default {
   name: "LoginView",
+  components: {
+    MainLayout
+  },
   data() {
     return {
       user: {

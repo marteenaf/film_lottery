@@ -1,20 +1,30 @@
 <template>
-  <h1>Sign up here</h1>
-  <v-form v-model="valid" @submit.prevent="validateForm" validate-on="submit">
-    <v-text-field v-model="user.email" label="Email" :rules="emailRules" autocomplete="email"></v-text-field>
-    <!--<v-text-field prefix="@" v-model="handle" label="Handle" :rules="passwordRules"></v-text-field>-->
-    <v-text-field type="password" v-model="user.password" label="Password" :rules="passwordRules"
-      autocomplete="new-password"></v-text-field>
-    <v-alert v-if="response" :type="alertType" :title="alertTitle" :text="alertMessage"></v-alert>
-    <v-btn class="ma-3" type="submit" color="primary">Sign-up</v-btn>
-    <v-btn variant="text" class="text-decoration-underline" color="primary"
-      @click="this.$router.push('/login')">Login</v-btn>
-  </v-form>
+  <MainLayout :centered="true">
+    <template #header>
+      <h1>Sign up here</h1>
+    </template>
+    <template #content>
+      <v-form v-model="valid" @submit.prevent="validateForm" validate-on="submit">
+        <v-text-field v-model="user.email" label="Email" :rules="emailRules" autocomplete="email"></v-text-field>
+        <!--<v-text-field prefix="@" v-model="handle" label="Handle" :rules="passwordRules"></v-text-field>-->
+        <v-text-field type="password" v-model="user.password" label="Password" :rules="passwordRules"
+          autocomplete="new-password"></v-text-field>
+        <v-alert v-if="response" :type="alertType" :title="alertTitle" :text="alertMessage"></v-alert>
+        <v-btn class="ma-3" type="submit" color="primary">Sign-up</v-btn>
+        <v-btn variant="text" class="text-decoration-underline" color="primary"
+          @click="this.$router.push('/login')">Login</v-btn>
+      </v-form>
+    </template>
+  </MainLayout>
 </template>
 <script lang="ts">
+import MainLayout from "@/components/layouts/MainLayout.vue";
 import { useUserStore } from "@/stores/usersStore";
 export default {
   name: "SignUpView",
+  components: {
+    MainLayout
+  },
   data() {
     return {
       user: {
