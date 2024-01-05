@@ -1,9 +1,10 @@
 <template>
-  <v-container class="wrapper d-flex flex-column">
+  <v-container
+    :class="['wrapper', 'd-flex', 'flex-column', centered ? 'align-center' : '', centered ? 'justify-center' : '']">
     <v-row class="header">
       <slot name="header"></slot>
     </v-row>
-    <v-row class="auto">
+    <v-row :class="['auto', centered ? 'auto-centered' : '']">
       <slot name="content"></slot>
     </v-row>
     <v-row class="footer">
@@ -14,6 +15,7 @@
 <script>
 export default {
   name: "MainLayout",
+  props: ["centered"]
 };
 </script>
 <style>
@@ -26,6 +28,10 @@ export default {
   /*flex: auto;*/
   flex-grow: 1;
   overflow: auto;
+}
+
+.auto-centered {
+  height: min-content !important;
 }
 
 .footer {
