@@ -24,6 +24,16 @@ const routes: RouteRecordRaw[] = [
     meta: {
       requiresAuth: true,
     },
+    children: [
+      {
+        path: "create",
+        name: "NewListView",
+        component: NewListView,
+        meta: {
+          requiresAuth: true,
+        }
+      },
+    ]
   },
   {
     path: "/list/:id",
@@ -42,14 +52,7 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true,
     }
   },
-  {
-    path: "/list/create",
-    name: "NewListView",
-    component: NewListView,
-    meta: {
-      requiresAuth: true,
-    }
-  },
+
   {
     path: "/list/:id/pick",
     name: "PickMovies",

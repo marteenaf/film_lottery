@@ -26,6 +26,7 @@
       </v-col>
     </template>
   </MainLayout>
+  <router-view></router-view>
 </template>
 <script>
 import ListProgressBar from "@/components/custom/ListProgressBar.vue";
