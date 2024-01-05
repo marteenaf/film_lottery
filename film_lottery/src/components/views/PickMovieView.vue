@@ -1,8 +1,9 @@
 <template>
   <v-container class="" style="height:100%">
     <v-row class="">
-      <v-col style="height:200px;" class="d-flex justify-center align-center">
+      <v-col style="height:200px;" class="d-flex flex-column justify-center align-center">
         <h1 v-if="count != max" class="text-center">{{ selectedMovie ? selectedMovie.title : "No movie" }}</h1>
+        <h3 v-if="count != max" class="text-center">Added by {{ selectedMovie ? selectedMovie.addedBy : "Noone" }}</h3>
         <h1 v-else class="text-center">No more pick attempts for now!</h1>
       </v-col>
     </v-row>
@@ -28,6 +29,13 @@
         <h1>{{ max - count }}</h1>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col style="height:200px;" class="d-flex justify-center align-center">
+        <h6>Last Watched </h6>
+        <h3 class="text-center">{{ lastWatchedMovie ? lastWatchedMovie.title : "No movie" }}</h3>
+        <h6 class="text-center"> Added by {{ lastWatchedMovie ? lastWatchedMovie.addedBy : "Noone" }}</h6>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -43,24 +51,41 @@ export default {
   data() {
     return {
       count: 0,
-      max: this.maxPicks ? this.maxPicks : 3,
+      max: this.maxPicks ? this.maxPicks : 5,
       store: useListStore(),
       selectedMovie: null,
+      lastWatchedMovie: null,
     };
   },
   async mounted() {
+    this.lastWatchedMovie = await fetchMovieDetails(this.store.selectedList.lastPicked);
+    this.lastWatchedMovie.addedBy = this.store.getLastPickedUser;
     await this.pickMovie();
   },
   methods: {
     async pickMovie() {
       if (this.count < this.max) {
         const movieList = this.store.selectedList.movies.filter(m => !m.watched);
+        const lastUser = this.store.getLastPickedUser;
         const length = movieList.length;
-        console.debug(length);
         if (length > 0) {
-          const index = Math.floor(Math.random() * length);
-          const movieId = movieList[index].dbid;
+
+          //create the new bucket with weighting
+          const weightedMovieList = [];
+          movieList.map(m => {
+            let multiplier = 1;
+            if (lastUser && lastUser != m.addedBy) {
+              multiplier = 2;
+            }
+            for (let i = 0; i < multiplier; i++) {
+              weightedMovieList.push(m);
+            }
+          });
+          const weightedLength = weightedMovieList.length;
+          const index = Math.floor(Math.random() * weightedLength);
+          const movieId = weightedMovieList[index].dbid;
           this.selectedMovie = await fetchMovieDetails(movieId);
+          this.selectedMovie.addedBy = weightedMovieList[index].addedBy;
           this.count++;
         } else {
           this.count = 0;
