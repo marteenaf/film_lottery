@@ -90,11 +90,11 @@ export const router = createRouter({
 router.beforeResolve(async (to, from) => {
   const store = useUserStore();
 
-  console.group("Routing Information");
-  console.log("from route", from.path, from.meta.requiresAuth, from);
-  console.log("to route", to.path, to.meta.requiresAuth, to);
-  console.log("authentication status", store.getAuthentication, store.getUser);
-  console.groupEnd();
+  //console.group("Routing Information");
+  //console.log("from route", from.path, from.meta.requiresAuth, from);
+  //console.log("to route", to.path, to.meta.requiresAuth, to);
+  //console.log("authentication status", store.getAuthentication, store.getUser);
+  //console.groupEnd();
 
   //simplofy this
   if (from !== START_LOCATION) {
