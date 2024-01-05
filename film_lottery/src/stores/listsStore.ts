@@ -36,6 +36,16 @@ export const useListStore = defineStore("listStore", {
         }
       }
       return false;
+    },
+    getLastPickedUser() {
+      if (this.selectedList.lastPicked) {
+        const movie = this.selectedList.movies.find(m => m.dbid == this.selectedList.lastPicked);
+        if (movie) {
+          return movie.addedBy;
+        }
+      }
+
+      return null;
     }
   },
   actions: {
@@ -63,6 +73,7 @@ export const useListStore = defineStore("listStore", {
         maxLength: maxLength,
         users: [...users],
         uuid: uuid,
+        lastPicked: null
       };
 
       //here we post?
@@ -81,7 +92,8 @@ export const useListStore = defineStore("listStore", {
     updateCurrentListMovie(object) {
       console.debug("movie watched!", object);
       this.selectedList.movies.find(m => m.dbid == object.dbid).watched = object.watched;
-      this.patchSelectedListMovies();
+      this.selectedList.lastPicked = object.dbid,
+        this.patchSelectedListMovies();
     },
     addMovie(movieId, user) {
       const myList = this.selectedList;
@@ -139,6 +151,7 @@ interface List {
   maxLength: number,
   users: string[],
   uuid: string,
+  lastPicked: number
 
 }
 
