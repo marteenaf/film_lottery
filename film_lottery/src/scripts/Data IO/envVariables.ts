@@ -1,4 +1,3 @@
-export const baseUrl = import.meta.env.VITE_BACKEND_URL;
-export const mongoDatabase = import.meta.env.VITE_MONGO_DATABASE;
-export const mongoListsCollection = import.meta.env.VITE_MONGO_LIST_COLLECTION;
-export const movieDbKey = import.meta.env.VITE_MOVIE_DB_KEY;
+export const baseUrl = process.env.VUE_APP_BACKEND_URL;
+export const mongoDatabase = process.env.VUE_APP_MONGO_DATABASE;
+export const mongoListsCollection = process.env.VUE_APP_MONGO_LIST_COLLECTION;

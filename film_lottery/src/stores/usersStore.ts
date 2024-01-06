@@ -51,7 +51,6 @@ export const useUserStore = defineStore("userStore", {
       try {
         const url = `${baseUrl}/auth/refresh`;
         const response = await postRequest(url, {});
-        console.debug("Refreshing", response);
         if (response.status >= 200 && response.status < 400) {
           this.startSession(response.data);
         } else {

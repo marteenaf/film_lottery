@@ -47,7 +47,7 @@ export default {
   },
   async created() {
     await this.listStore.queryListsByUsers();
-    console.table(this.listStore.allLists);
+    //console.table(this.listStore.allLists);
 
   },
   mounted() {
@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     viewList(value) {
-      console.debug("value?", value);
       this.$router.push({ name: "ListView", params: { id: value } });
     }
   },

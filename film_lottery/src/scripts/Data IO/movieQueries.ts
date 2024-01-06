@@ -1,12 +1,5 @@
-import { movieDbKey } from "./Data IO/envVariables";
-
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: "Bearer " + movieDbKey
-  }
-};
+import { postRequest } from "./axiosConnection";
+import { baseUrl } from "./envVariables";
 
 export async function fetchMovieDetails(id) {
   const url = `https://api.themoviedb.org/3/movie/${id}`;
@@ -22,9 +15,13 @@ export async function searchMovies(string) {
   return result;
 }
 
-async function queryMovieDatabase(url) {
-  const result = await fetch(url, options)
-    .then(response => response.json())
-    .catch(err => console.error(err));
-  return result;
+async function queryMovieDatabase(url: string) {
+  const requesturl = `${baseUrl}/moviedb`;
+  const body = { url: url };
+  const response = await postRequest(requesturl, body);
+  if (response) {
+    return response;
+  } else {
+    return null;
+  }
 }

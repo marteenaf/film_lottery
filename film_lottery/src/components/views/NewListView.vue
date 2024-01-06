@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     async createNewList() {
-      console.debug(this.form);
+      //console.debug(this.form);
       const maxLength = this.form.length * (this.form.users.length + 1);
       await this.listStore.postNewList(this.form.name, maxLength, this.form.users, this.userStore.getUser);
       this.$router.push({ name: "ListView", params: { id: this.listStore.selectedList.uuid } });
@@ -64,7 +64,7 @@ export default {
     },
     async validate(e) {
       let result = await e;
-      console.debug(result);
+      //console.debug(result);
       if (result.valid) {
         this.createNewList();
       }
