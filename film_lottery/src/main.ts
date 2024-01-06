@@ -5,7 +5,7 @@ import "vuetify/styles";
 import { createVuetify } from "vuetify";
 import { createPinia } from "pinia";
 import { authentication } from "./plugins/authentication";
-import { router } from "./routes/index.js";
+import { router } from "./routes/index";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, md } from "vuetify/iconsets/md";
