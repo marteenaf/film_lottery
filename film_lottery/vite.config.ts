@@ -1,20 +1,20 @@
 // vite.config.ts
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 
-export default defineConfig({
-  plugins: [vue()],
-  envPrefix: "VITE_",
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "/src"),
+export default defineConfig(({ mode }) => {
+  Object.assign(process.env, loadEnv(mode, process.cwd(), ""));
+
+  return {
+    plugins: [vue()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "/src"),
+      },
     },
-  },
-  define: {
-    "process.env": {},
-  },
-  server: {
-    port: 8080
-  }
+    server: {
+      port: 8080
+    }
+  };
 });
