@@ -30,7 +30,7 @@
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
 import MainLayout from "@/components/layouts/MainLayout.vue";
 import OverlayLayout from "@/components/layouts/OverlayLayout.vue";
-import { searchMovies } from "@/scripts/fetchTest";
+import { searchMovies } from "@/scripts/Data IO/movieQueries";
 import { useListStore } from "@/stores/listsStore";
 import { useUserStore } from "@/stores/usersStore";
 
@@ -56,7 +56,6 @@ export default {
   methods: {
     addToList(id) {
       console.assert(this.listStore.selectedList.movies.length <= this.listStore.selectedList.maxLength, "there are too many movies");
-      console.debug(this.listStore.selectedList.movies.length, "<=", this.listStore.selectedList.maxLength);
       if (this.listStore.checkUserCanAddMovies && this.listStore.selectedList.movies.length < this.listStore.selectedList.maxLength) {
         this.inList[id] = true;
         this.listStore.addMovie(id, this.userStore.getUser);
@@ -90,7 +89,8 @@ export default {
   watch: {
     async searchText(value) {
       //run query to get the movies
-      const searchResult = await searchMovies(value);
+      const requestResult = await searchMovies(value);
+      const searchResult = requestResult.data;
       this.movieList = searchResult.results.map((mov) => {
         if (this.listStore.selectedList) {
           const movieList = this.listStore.selectedList.movies.find(m => m.dbid == mov.id);
@@ -105,7 +105,6 @@ export default {
     "listStore.selectedList.movies": {
       deep: true,
       handler: function (value) {
-        console.debug("list store changes?", value);
         this.movieList.map(m => {
           const movie = value.find(mov => mov.dbid == m.id);
           if (movie) {
@@ -116,4 +115,4 @@ export default {
     }
   }
 };
-</script>
+</script>@/scripts/movieQueries

@@ -39,7 +39,7 @@
   </v-container>
 </template>
 <script>
-import { fetchMovieDetails } from "@/scripts/fetchTest";
+import { fetchMovieDetails } from "@/scripts/Data IO/movieQueries";
 import PickButton from "../reusable/PickButton.vue";
 import { useListStore } from "@/stores/listsStore";
 export default {
@@ -58,7 +58,8 @@ export default {
     };
   },
   async mounted() {
-    this.lastWatchedMovie = await fetchMovieDetails(this.store.selectedList.lastPicked);
+    const requestResult = await fetchMovieDetails(this.store.selectedList.lastPicked);
+    this.lastWatchedMovie = requestResult?.data;
     this.lastWatchedMovie.addedBy = this.store.getLastPickedUser;
     await this.pickMovie();
   },
@@ -84,7 +85,8 @@ export default {
           const weightedLength = weightedMovieList.length;
           const index = Math.floor(Math.random() * weightedLength);
           const movieId = weightedMovieList[index].dbid;
-          this.selectedMovie = await fetchMovieDetails(movieId);
+          const requestResult = await fetchMovieDetails(movieId);
+          this.selectedMovie = requestResult?.data;
           this.selectedMovie.addedBy = weightedMovieList[index].addedBy;
           this.count++;
         } else {
@@ -109,8 +111,6 @@ export default {
     },
     cols() {
       const display = this.$vuetify.display.name;
-      console.log("display name", display, this.$vuetify);
-
       const sizes = {
         "xs": 12,
         "sm": 12,
@@ -123,4 +123,4 @@ export default {
     }
   }
 };
-</script>
+</script>@/scripts/movieQueries

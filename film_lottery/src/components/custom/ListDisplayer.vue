@@ -2,12 +2,7 @@
   <MainLayout>
     <template #header>
       <v-col>
-        <div class="pb-5 d-flex" align="center">
-          <h2 class="text-left">{{ list.name }}</h2>
-          <v-spacer></v-spacer>
-          <PickButton :color="'red'" :shadowColor="'darkred'" :text="'Pick Movie'"
-            @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
-        </div>
+        <h2 class="text-left">{{ list.name }}</h2>
         <ListProgressBar :barHeight="30" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
           :value="watchedMovies">
         </ListProgressBar>
@@ -29,9 +24,12 @@
       </v-col>
     </template>
     <template #fab v-if="!this.$route.path.includes('add')">
-      <v-col align="center">
+      <v-col align="center" class="d-flex pa-5">
         <v-btn v-if="!this.$route.path.includes('add')" :icon="'add'" @click="this.$router.push({ name: 'AddMovies' })"
           color="primary" size="large"></v-btn>
+        <v-spacer></v-spacer>
+        <PickButton :color="'red'" :shadowColor="'darkred'" :text="'Pick Movie'"
+          @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
       </v-col>
     </template>
   </MainLayout>
@@ -41,7 +39,7 @@ import MovieDisplayer from "../reusable/MovieDisplayer.vue";
 import ListProgressBar from "@/components/custom/ListProgressBar.vue";
 import PickButton from "@/components/reusable/PickButton.vue";
 import MainLayout from "@/components/layouts/MainLayout.vue";
-import { fetchMovieDetails } from "@/scripts/fetchTest";
+import { fetchMovieDetails } from "@/scripts/Data IO/movieQueries";
 export default {
   name: "ListDisplayer",
   props: ["list", "user"],
@@ -59,7 +57,7 @@ export default {
   async mounted() {
     //check the user is authorised to access this list.
     await this.getMovieDetails();
-    console.debug(this.allMovies);
+    //console.debug(this.allMovies);
   },
   methods: {
     updateMovieList(movie, watched) {
@@ -69,12 +67,13 @@ export default {
 
       if (this.list.movies) {
         const promises = this.list.movies.map(async (movie) => {
-          const moviePromise = await fetchMovieDetails(movie.dbid);
+          const requestResult = await fetchMovieDetails(movie.dbid);
+          const moviePromise = requestResult.data;
           moviePromise.watched = movie.watched;
           moviePromise.addedBy = movie.addedBy;
           return moviePromise;
         });
-        Promise.all(promises).then(values => { console.debug("resulting values", values); this.allMovies = values; });
+        Promise.all(promises).then(values => { this.allMovies = values; });
       }
     },
     removeMovie(id, watched) {
@@ -85,7 +84,6 @@ export default {
     addedByUser(movieId) {
       const movie = this.allMovies.find(m => m.id == movieId);
       if (movie) {
-        console.debug("user", this.user);
         return this.user == movie.addedBy;
       }
       return false;
@@ -95,7 +93,6 @@ export default {
   watch: {
     "list.movies.length": {
       handler: async function () {
-        console.debug("length of movies has changed");
         await this.getMovieDetails();
       }
     }
@@ -104,7 +101,6 @@ export default {
     disabled() {
       const watched = this.allMovies.filter(m => !m.watched).length;
       const falsy = watched == 0 ? true : false;
-      console.debug("Watched?", watched, falsy);
       return falsy;
     },
     watchedMovies() {
@@ -114,4 +110,4 @@ export default {
 
 };
 </script>
-<style></style>
+<style></style>@/scripts/movieQueries

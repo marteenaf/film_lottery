@@ -81,16 +81,13 @@ export const useListStore = defineStore("listStore", {
       await postList([newList]);
       this.setCurrentList(uuid);
       console.debug("[POST] New List", newList, this.selectedList);
-      console.debug(this.allLists);
     },
     async patchSelectedListMovies() {
       const id = this.selectedList.uuid;
       const doc = { movies: this.selectedList.movies };
-      console.log("movies to update", id, doc);
       await updateList(id, doc);
     },
     updateCurrentListMovie(object) {
-      console.debug("movie watched!", object);
       this.selectedList.movies.find(m => m.dbid == object.dbid).watched = object.watched;
       this.selectedList.lastPicked = object.dbid,
         this.patchSelectedListMovies();

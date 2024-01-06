@@ -26,7 +26,7 @@ export default {
     };
   },
   async mounted() {
-    console.debug("[List View] Mounting...", this.$route, this.id);
+    console.debug("[List View] Mounting...", this.id);
     await this.getListFromUrl();
     this.mounted = true;
 
@@ -70,7 +70,7 @@ export default {
     disabled() {
       const watched = this.listStore.selectedList && this.listStore.selectedList.movies.filter(m => !m.watched).length;
       const falsy = watched == 0 ? true : false;
-      console.debug("Watched?", watched, falsy);
+      //console.debug("Watched?", watched, falsy);
       return falsy;
     }
   },
