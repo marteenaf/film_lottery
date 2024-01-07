@@ -1,5 +1,6 @@
 <template>
   <v-card variant="outlined" class="d-flex">
+    <v-card-item><img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" /></v-card-item>
     <v-card-item style="flex:auto !important">
       <v-card-title :class="movie.watched ? 'watched' : ''" style="text-wrap:wrap">{{ movieTitle }}</v-card-title>
       <v-card-subtitle>{{ releaseYear }}</v-card-subtitle>
@@ -17,7 +18,8 @@ export default {
   name: "MovieDisplayer",
   props: ["movie"],
   data() {
-    return {};
+    return {
+    };
   },
   computed: {
     movieTitle() {
@@ -28,6 +30,9 @@ export default {
     },
     addedBy() {
       return this.movie.addedBy ? this.movie.addedBy : "";
+    },
+    posterPath() {
+      return this.movie.addedBy ? this.movie.poster_path : "";
     }
   }
 };
