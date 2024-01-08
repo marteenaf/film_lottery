@@ -5,8 +5,9 @@ import MovieCatalogView from "@/components/views/MovieCatalogView.vue";
 import PickMovieView from "@/components/views/PickMovieView.vue";
 import SignUpView from "@/components/views/SignUpView.vue";
 import LoginView from "@/components/views/LoginView.vue";
-import { createRouter, createWebHashHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
 import { useUserStore } from "@/stores/usersStore";
+import { token } from "@/scripts/Data IO/axiosConnection";
 
 const routes: RouteRecordRaw[] = [
 
@@ -80,14 +81,49 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export const router = createRouter({
-  //4. Provide the history implementation to use. We are using the hash history for simplicity here.
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   strict: true,
   routes,
 });
 
-//check authorisation
-router.beforeResolve(async (to, from) => {
+////check authorisation
+//router.beforeResolve(async (to, from) => {
+//  const store = useUserStore();
+
+//  console.group("Routing Information");
+//  console.log("from route", from.path, from.meta.requiresAuth, from);
+//  console.log("to route", to.path, to.meta.requiresAuth, to);
+//  console.log("authentication status", store.getAuthentication, store.getUser);
+//  console.groupEnd();
+
+//  //simplofy this
+//  if (from !== START_LOCATION) {
+//    if (to.meta.requiresAuth) {
+//      //post request to backend to request the user
+//      if (!store.getAuthentication) {
+//        //post request to check for authentication? and re-direct?
+//        return { name: "LoginView" };
+//      }
+//    } else {
+//      //handle authentication routes (like login) only if coming from a route that requires
+//      if (from.meta.requiresAuth) {
+//        const confirmation = await confirm("You will be logged out of the session");
+//        if (confirmation) {
+//          //send request to logout route
+//          //logout from the store
+//          store.logoutUser();
+//        } else {
+//          return false;
+//        }
+//      }
+//    }
+//  }
+//  //re-load
+
+//});
+
+router.beforeEach(async (to, from) => {
+
   const store = useUserStore();
 
   //console.group("Routing Information");
@@ -96,28 +132,14 @@ router.beforeResolve(async (to, from) => {
   //console.log("authentication status", store.getAuthentication, store.getUser);
   //console.groupEnd();
 
-  //simplofy this
-  if (from !== START_LOCATION) {
+  if (!store.getAuthentication) {
     if (to.meta.requiresAuth) {
-      //post request to backend to request the user
-      if (!store.getAuthentication) {
-        //post request to check for authentication? and re-direct?
-        return { name: "LoginView" };
-      }
-    } else {
-      //handle authentication routes (like login) only if coming from a route that requires
-      if (from.meta.requiresAuth) {
-        const confirmation = await confirm("You will be logged out of the session");
-        if (confirmation) {
-          //send request to logout route
-          //logout from the store
-          store.logoutUser();
-        } else {
-          return false;
-        }
-      }
+      return "/login";
+    }
+  } else {
+    if (!to.meta.requiresAuth) {
+      return "/home";
     }
   }
-  //re-load
 
 });
