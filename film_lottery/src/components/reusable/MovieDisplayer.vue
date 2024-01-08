@@ -23,16 +23,22 @@ export default {
   },
   computed: {
     movieTitle() {
-      return this.movie.title.toString();
+      return this.movie?.title.toString();
     },
     releaseYear() {
-      return this.movie.release_date.split("-")[0];
+      return this.movie?.release_date.split("-")[0];
     },
     addedBy() {
-      return this.movie.addedBy ? this.movie.addedBy : "";
+      return this.movie?.addedBy ? this.movie.addedBy : "";
     },
     posterPath() {
-      return this.movie.addedBy ? this.movie.poster_path : "";
+      return this.movie?.poster_path ? this.movie.poster_path : "";
+    },
+    director() {
+      return this.movie?.director;
+    },
+    duration() {
+      return this.movie?.length;
     }
   }
 };
