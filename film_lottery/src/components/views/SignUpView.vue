@@ -77,8 +77,7 @@ export default {
               this.alertMessage = response.data.message;
               setTimeout(() => {
                 this.$router.push({ name: "Home" });
-              }, 500);
-
+              }, 750);
             }
           } else {
             this.alertType = "error";
