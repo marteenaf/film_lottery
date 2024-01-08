@@ -1,6 +1,8 @@
 import { baseUrl, mongoDatabase, mongoListsCollection } from "./envVariables";
 import { getRequest, patchByUuidRequest, postRequest } from "./axiosConnection";
 
+
+//remove base url as it will be in axios config
 export async function getLists() {
   const url = `${baseUrl}/mongo/api/${mongoDatabase}/${mongoListsCollection}`;
   const response = await getRequest(url);
