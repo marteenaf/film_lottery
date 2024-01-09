@@ -32,6 +32,13 @@ export async function getListsByUser(user) {
           ]
         }
       }
+    }, {
+      "$match":
+      {
+        "$expr": {
+          "$ne": ["$softDelete", true],
+        },
+      },
     }
   ];
   const url = `${baseUrl}/mongo/api/${mongoDatabase}/${mongoListsCollection}/aggregate?pipeline=${JSON.stringify(agg)}`;

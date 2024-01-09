@@ -136,6 +136,17 @@ export const useListStore = defineStore("listStore", {
         }
       }
       return false;
+    },
+    async deleteList() {
+      const myList = this.selectedList;
+      const index = this.allLists.indexOf(myList);
+      const id = myList.uuid;
+      const doc = {
+        softDelete: true
+      };
+      await updateList(id, doc);
+      this.selectedList = null;
+      this.allLists.splice(index, 1);
     }
 
   }
