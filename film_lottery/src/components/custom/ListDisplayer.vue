@@ -4,7 +4,7 @@
       <v-col>
         <h2 class="text-left">{{ list.name }}</h2>
         <ListProgressBar :barHeight="30" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
-          :value="watchedMovies">
+          :value="watchedMovies" valueLabel="watched" subtotalLabel="added" totalLabel="total">
         </ListProgressBar>
       </v-col>
     </template>

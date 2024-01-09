@@ -7,15 +7,18 @@
           <v-spacer></v-spacer>
         </div>
         <v-list lines="two">
-          <v-list-item v-for="list in listStore.allLists" :key="list" :title="list.name" active-color="primary"
-            :value="list.uuid" @click="viewList(list.uuid)">
+          <v-list-item v-for="list in listStore.allLists" :key="list.uuid" active-color="primary" :value="list.uuid"
+            @click="viewList(list.uuid)">
             <template #default>
+              <v-list-item-title>
+                <h4>{{ list.name }}</h4>
+              </v-list-item-title>
               <ListProgressBar :barHeight="15" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
-                :value="list.movies.filter(m => m.watched).length">
+                :value="list.movies.filter(m => m.watched).length" valueLabel="watched" subtotalLabel="added">
               </ListProgressBar>
             </template>
             <template #append v-if="list.createdBy == user">
-              <v-btn icon="settings" variant="plain" @click.stop="editList(list.uuid)"></v-btn>
+              <v-btn icon="more_vert" variant="plain" @click.stop="editList(list.uuid)" class="ml-3"></v-btn>
             </template>
           </v-list-item>
         </v-list>
