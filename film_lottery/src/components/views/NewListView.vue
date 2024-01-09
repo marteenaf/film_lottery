@@ -1,5 +1,21 @@
 <template>
-  <OverlayLayout ref="overlay">
+  <v-dialog v-model="dialog" style="z-index:2500" class="custom-dialog">
+    <v-card>
+      <v-card-title>
+        <h3>{{ alertTitle }}</h3>
+      </v-card-title>
+      <v-card-text>
+        <p>{{ alertText }}</p>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn @click="confirm" variant="elevated"
+          :color="this.alertAction == 'edit' ? 'primary' : 'error'">CONFIRM</v-btn>
+        <v-btn @click="() => dialog = false" variant="text" class="text-decoration-underline"
+          color="primary">CANCEL</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <OverlayLayout ref="overlay" :overrideRoute="editMode ? { name: 'Home' } : null">
     <v-form :title="'New List'" @submit.prevent="validate">
       <MainLayout>
         <template #content>
@@ -7,10 +23,10 @@
             <h1>{{ editMode ? 'Edit List' : 'New List' }}</h1>
             <h4 class="mb-4">created by {{ userStore.getUser }}</h4>
             <v-text-field :label="'Name'" v-model="form.name" :rules="rules"></v-text-field>
-            <v-slider :min="1" :max="10" :step="1" show-ticks thumb-label :label="'Movies per user'"
-              v-model="form.length"></v-slider>
+            <v-slider :min="1" :max="10" :step="1" show-ticks thumb-label :label="'Movies per user'" v-model="form.length"
+              :rules="editLengthRules"></v-slider>
             <v-combobox :items="[]" :item-title="'email'" multiple chips clearable v-model="form.users" item-value="email"
-              :rules="rules" label="Users"></v-combobox>
+              label="Users"></v-combobox>
           </v-col>
         </template>
         <template #fab>
@@ -19,7 +35,9 @@
             <v-btn @click="this.$router.push({ name: 'Home' })" class="text-decoration-underline" color="primary"
               variant="text">Cancel</v-btn>
             <v-spacer></v-spacer>
-            <v-btn v-if="editMode" color="error" variant="elevated" @click="deleteList">Delete List</v-btn>
+            <v-btn v-if="editMode" color="error" variant="elevated"
+              @click="openDialog('delete', 'Do you want to delete this list?', 'Deleting this list will DELETE it for all users added. All movies and data will be lost.')">Delete
+              List</v-btn>
           </v-col>
         </template>
       </MainLayout>
@@ -60,8 +78,18 @@ export default {
         }
       ],
       editMode: false,
-      editLengthRules: [],
-      editUsersRules: [],
+      editLengthRules: [(value) => {
+        if (value >= this.currentLength) {
+          return true;
+        } else {
+          return "Movies have already been added, cannot remove existing movies.";
+        }
+      }],
+      currentLength: 0,
+      dialog: false,
+      alertTitle: "",
+      alertText: "",
+      alertAction: ""
     };
   },
   async mounted() {
@@ -72,7 +100,6 @@ export default {
       await this.getListFromUrl();
       this.fillForm();
     }
-    console.debug("[New List View] Mounted...", this.editMode, this.listStore.selectedList);
   },
   methods: {
     async createNewList() {
@@ -85,7 +112,14 @@ export default {
       let result = await e;
       //console.debug(result);
       if (result.valid) {
-        this.createNewList();
+        if (this.editMode) {
+          this.openDialog("edit",
+            "Do you want to EDIT this list?",
+            "If you have removed users, the movies they have added to the list will be removed too.");
+        } else {
+          await this.createNewList();
+        }
+
       }
     },
     async getListFromUrl() {
@@ -105,13 +139,38 @@ export default {
       this.form.name = list.name;
       this.form.users = list.users;
       this.form.length = list.maxLength / (list.users.length + 1);
+      this.currentLength = this.form.length;
+      this.currentUsersLength = list.users.length;
     },
     async deleteList() {
       // add key softDelete:true to list, then filter in query
       await this.listStore.deleteList();
       this.$router.push({ name: "Home" });
+    },
+    async editList() {
+      const maxLength = this.form.length * (this.form.users.length + 1);
+      await this.listStore.editList(this.form.name, maxLength, this.form.users, this.userStore.getUser);
+      this.$router.push({ name: "Home" });
+    },
+    openDialog(action, title, text) {
+      this.dialog = true;
+      this.alertAction = action;
+      this.alertTitle = title;
+      this.alertText = text;
+    },
+    async confirm() {
+      if (this.alertAction == "edit") {
+        await this.editList();
+      } else if (this.alertAction == "delete") {
+        await this.deleteList();
+      }
     }
   }
 };
 </script>
-<style></style>
+<style>
+.custom-dialog>.v-overlay__content {
+  justify-content: center !important;
+
+}
+</style>
