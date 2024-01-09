@@ -2,9 +2,8 @@
   <v-container class="" style="height:100%">
     <v-row class="">
       <v-col style="height:200px;" class="d-flex flex-column justify-center align-center">
-        <h1 v-if="count != max" class="text-center">{{ selectedMovie ? selectedMovie.title : "No movie" }}</h1>
-        <h3 v-if="count != max" class="text-center">Added by {{ selectedMovie ? selectedMovie.addedBy : "Noone" }}</h3>
-        <h1 v-else class="text-center">No more pick attempts for now!</h1>
+        <h1 class="text-center">{{ selectedMovie ? selectedMovie.title : "No movie" }}</h1>
+        <h3 class="text-center">Added by {{ selectedMovie ? selectedMovie.addedBy : "Noone" }}</h3>
       </v-col>
     </v-row>
     <v-row class="">
@@ -14,25 +13,26 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col align="center" :cols="cols">
+        <PickButton :text="'Watch Movie'" :color="'green'" :shadowColor="'darkgreen'" @pick="watchMovie">
+        </PickButton>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col align="center" :cols="cols" v-if="disabled">
         <PickButton :text="'Back to List'" :color="'lightgrey'" :shadowColor="'grey'" @pick="toList">
         </PickButton>
       </v-col>
-      <v-col align="center" :cols="cols" v-else>
-        <PickButton :text="'Watch Movie'" :color="'green'" :shadowColor="'darkgreen'" @pick="watchMovie"
-          :disabled="disabled">
-        </PickButton>
-      </v-col>
     </v-row>
     <v-row>
       <v-col style="height:200px;" class="d-flex justify-center align-center">
-        <h1>{{ max - count }}</h1>
+        <h1 class="text-center">{{ count == max ? 'No more attempts for now!' : max - count }}</h1>
       </v-col>
     </v-row>
     <v-row>
-      <v-col style="height:200px;" class="d-flex justify-center align-center">
-        <h6>Last Watched </h6>
-        <h3 class="text-center">{{ lastWatchedMovie ? lastWatchedMovie.title : "No movie" }}</h3>
+      <v-col style="height:200px;" class="justify-center align-center">
+        <h6 class="text-center">Last Watched </h6>
+        <h3 class="text-center"> {{ lastWatchedMovie ? lastWatchedMovie.title : "No movie" }} </h3>
         <h6 class="text-center"> Added by {{ lastWatchedMovie ? lastWatchedMovie.addedBy : "Noone" }}</h6>
       </v-col>
     </v-row>
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     async pickMovie() {
-      if (this.count < this.max) {
+      if (this.count < this.max + 1) {
         const movieList = this.store.selectedList.movies.filter(m => !m.watched);
         const lastUser = this.store.getLastPickedUser;
         const length = movieList.length;

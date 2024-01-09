@@ -66,12 +66,14 @@ export const useListStore = defineStore("listStore", {
     },
     async postNewList(name, maxLength, users, createdBy = "xxx@gmail.com") {
       const uuid = uuid4();
+      const lowerCaseUsers = users?.map(u => { return u.toLowerCase(); }) || [];
+      console.debug(lowerCaseUsers);
       const newList: List = {
         name: name,
-        createdBy: createdBy,
+        createdBy: createdBy.toLowerCase(),
         movies: [],
         maxLength: maxLength,
-        users: [...users],
+        users: [...lowerCaseUsers],
         uuid: uuid,
         lastPicked: null
       };
@@ -136,6 +138,36 @@ export const useListStore = defineStore("listStore", {
         }
       }
       return false;
+    },
+    async deleteList() {
+      const myList = this.selectedList;
+      const index = this.allLists.indexOf(myList);
+      const id = myList.uuid;
+      const doc = {
+        softDelete: true
+      };
+      await updateList(id, doc);
+      this.selectedList = null;
+      this.allLists.splice(index, 1);
+    },
+    async editList(name, maxLength, users) {
+      const myList = this.selectedList;
+      myList.name = name;
+      myList.maxLength = maxLength;
+      myList.users = [...users];
+      myList.movies = myList.movies.filter(m => myList.users.includes(m.addedBy) || m.addedBy == myList.createdBy);
+
+      if (!myList.movies.find(m => m.dbid == myList.lastPicked)) {
+        myList.lastPicked = null;
+      }
+
+      const id = myList.uuid;
+      const doc = JSON.parse(JSON.stringify(myList));
+      delete doc.uuid;
+      delete doc._id;
+
+      await updateList(id, doc);
+
     }
 
   }

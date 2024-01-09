@@ -5,9 +5,8 @@ import MovieCatalogView from "@/components/views/MovieCatalogView.vue";
 import PickMovieView from "@/components/views/PickMovieView.vue";
 import SignUpView from "@/components/views/SignUpView.vue";
 import LoginView from "@/components/views/LoginView.vue";
-import { createRouter, createWebHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
+import { createRouter, createWebHashHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
 import { useUserStore } from "@/stores/usersStore";
-import { token } from "@/scripts/Data IO/axiosConnection";
 
 const routes: RouteRecordRaw[] = [
 
@@ -63,6 +62,15 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
+    path: "/list/:id/edit",
+    name: "EditListView",
+    props: true,
+    component: NewListView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: "/sign-up",
     name: "SignUpView",
     component: SignUpView,
@@ -81,7 +89,7 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   strict: true,
   routes,
 });
