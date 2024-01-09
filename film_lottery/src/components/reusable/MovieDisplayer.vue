@@ -1,14 +1,15 @@
 <template>
-  <v-card variant="outlined" class="d-flex">
-    <v-card-item><img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" /></v-card-item>
-    <v-card-item style="flex:auto !important">
-      <v-card-title :class="movie.watched ? 'watched' : ''" style="text-wrap:wrap">{{ movieTitle }}</v-card-title>
-      <v-card-subtitle>{{ releaseYear }}</v-card-subtitle>
-      <v-card-subtitle>{{ addedBy }}</v-card-subtitle>
+  <v-card :variant="movie.watched ? 'tonal' : 'outlined'" class="d-flex">
+    <v-card-item class="pa-2"><img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" /></v-card-item>
+    <v-card-item class="pa-2" style="flex:auto !important;">
+      <v-card-title v-if="movie.watched">WATCHED</v-card-title>
+      <v-card-title
+        :class="[movie.watched ? 'watched' : '', 'text-wrapped', screen ? 'small-screen-title' : '', 'mb-2']">{{
+          movieTitle }}</v-card-title>
+      <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ releaseYear }} {{ duration }}m</v-card-subtitle>
+      <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ addedBy }}</v-card-subtitle>
     </v-card-item>
-    <v-spacer></v-spacer>
-    <v-card-item>{{ movie.watched ? "Watched" : "" }}</v-card-item>
-    <v-card-actions>
+    <v-card-actions class="pa-2">
       <slot name="add-list"></slot>
     </v-card-actions>
   </v-card>
@@ -34,11 +35,11 @@ export default {
     posterPath() {
       return this.movie?.poster_path ? this.movie.poster_path : "";
     },
-    director() {
-      return this.movie?.director;
-    },
     duration() {
-      return this.movie?.length;
+      return this.movie?.runtime;
+    },
+    screen() {
+      return this.$vuetify.display.name == "xs";
     }
   }
 };
@@ -46,5 +47,19 @@ export default {
 <style scoped>
 .watched {
   text-decoration: line-through;
+}
+
+.text-wrapped {
+  text-wrap: wrap;
+}
+
+.small-screen-title {
+  font-size: 1rem !important;
+  line-height: 1.25rem !important;
+}
+
+.small-screen-subtitle {
+  font-size: 0.75rem !important;
+  line-height: 1rem !important;
 }
 </style>
