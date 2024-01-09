@@ -69,7 +69,6 @@ export function runInterceptors(refreshCallback) {
     response => response,
     async (error) => {
       const prevRequest = error?.config;
-      console.debug(prevRequest);
       if ((error?.response?.status === 403 || error?.response?.status === 401) && !prevRequest.sent) {
         prevRequest.sent = true;
         try {

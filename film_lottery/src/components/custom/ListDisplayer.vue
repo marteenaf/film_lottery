@@ -4,7 +4,7 @@
       <v-col>
         <h2 class="text-left">{{ list.name }}</h2>
         <ListProgressBar :barHeight="30" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
-          :value="watchedMovies">
+          :value="watchedMovies" valueLabel="watched" subtotalLabel="added" totalLabel="total">
         </ListProgressBar>
       </v-col>
     </template>
@@ -15,7 +15,7 @@
             <template #add-list>
               <!--<v-checkbox v-model="movie.watched" hide-details
           @update:modelValue="(e) => updateMovieList(movie.id, e)"></v-checkbox>-->
-              <v-icon class="ma-3" :icon="movie.watched ? 'done' : ''" color="primary"></v-icon>
+              <v-icon v-if="movie.watched" class="ma-3" icon="done" color="primary"></v-icon>
               <v-btn :icon="'remove'" @click="removeMovie(movie.id, movie.watched)" :color="'error'" variant="elevated"
                 :disabled="movie.watched || !addedByUser(movie.id)" size="x-small"></v-btn>
             </template>
