@@ -8,12 +8,14 @@
         </div>
         <v-list lines="two">
           <v-list-item v-for="list in listStore.allLists" :key="list" :title="list.name" active-color="primary"
-            :value="list.uuid" @click="viewList(list.uuid)"
-            :prepend-icon="list.createdBy == user ? 'manage_accounts' : 'movie'">
+            :value="list.uuid" @click="viewList(list.uuid)">
             <template #default>
               <ListProgressBar :barHeight="15" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
                 :value="list.movies.filter(m => m.watched).length">
               </ListProgressBar>
+            </template>
+            <template #append v-if="list.createdBy == user">
+              <v-btn icon="settings" variant="plain" @click.stop="editList(list.uuid)"></v-btn>
             </template>
           </v-list-item>
         </v-list>
@@ -28,7 +30,7 @@
   </MainLayout>
   <router-view></router-view>
 </template>
-<script>
+<script lang="ts">
 import ListProgressBar from "@/components/custom/ListProgressBar.vue";
 import MainLayout from "@/components/layouts/MainLayout.vue";
 import { useListStore } from "@/stores/listsStore";
@@ -56,6 +58,10 @@ export default {
   methods: {
     viewList(value) {
       this.$router.push({ name: "ListView", params: { id: value } });
+    },
+    editList(value) {
+      console.debug("Editing list here");
+      this.$router.push({ name: "EditListView", params: { id: value } });
     }
   },
 };

@@ -7,7 +7,6 @@ import SignUpView from "@/components/views/SignUpView.vue";
 import LoginView from "@/components/views/LoginView.vue";
 import { createRouter, createWebHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
 import { useUserStore } from "@/stores/usersStore";
-import { token } from "@/scripts/Data IO/axiosConnection";
 
 const routes: RouteRecordRaw[] = [
 
@@ -60,6 +59,15 @@ const routes: RouteRecordRaw[] = [
     component: PickMovieView,
     meta: {
       requiresAuth: true,
+    }
+  },
+  {
+    path: "/list/:id/edit",
+    name: "EditListView",
+    props: true,
+    component: NewListView,
+    meta: {
+      requiresAuth: true
     }
   },
   {
