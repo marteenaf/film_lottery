@@ -19,7 +19,7 @@
             <v-btn @click="this.$router.push({ name: 'Home' })" class="text-decoration-underline" color="primary"
               variant="text">Cancel</v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="error" variant="elevated" @click="deleteList">Delete List</v-btn>
+            <v-btn v-if="editMode" color="error" variant="elevated" @click="deleteList">Delete List</v-btn>
           </v-col>
         </template>
       </MainLayout>
