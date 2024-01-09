@@ -66,12 +66,14 @@ export const useListStore = defineStore("listStore", {
     },
     async postNewList(name, maxLength, users, createdBy = "xxx@gmail.com") {
       const uuid = uuid4();
+      const lowerCaseUsers = users?.map(u => { return u.toLowerCase(); }) || [];
+      console.debug(lowerCaseUsers);
       const newList: List = {
         name: name,
-        createdBy: createdBy,
+        createdBy: createdBy.toLowerCase(),
         movies: [],
         maxLength: maxLength,
-        users: [...users],
+        users: [...lowerCaseUsers],
         uuid: uuid,
         lastPicked: null
       };

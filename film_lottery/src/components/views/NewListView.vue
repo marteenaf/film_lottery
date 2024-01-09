@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" style="z-index:2500" class="custom-dialog">
     <v-card>
-      <v-card-title>
+      <v-card-title style="text-wrap:wrap !important">
         <h3>{{ alertTitle }}</h3>
       </v-card-title>
       <v-card-text>
@@ -25,19 +25,18 @@
             <v-text-field :label="'Name'" v-model="form.name" :rules="rules"></v-text-field>
             <v-slider :min="1" :max="10" :step="1" show-ticks thumb-label :label="'Movies per user'" v-model="form.length"
               :rules="editLengthRules"></v-slider>
-            <v-combobox :items="[]" :item-title="'email'" multiple chips clearable v-model="form.users" item-value="email"
-              label="Users"></v-combobox>
+            <v-combobox :items="[]" :item-title="'email'" chips clearable v-model="form.users" item-value="email"
+              label="Add other users" multiple></v-combobox>
           </v-col>
         </template>
         <template #fab>
           <v-col class="d-flex">
-            <v-btn type="submit" color="primary" variant="elevated">{{ editMode ? 'Edit List' : 'Create List' }}</v-btn>
+            <v-btn type="submit" color="primary" variant="elevated">{{ editMode ? 'Edit' : 'Create' }}</v-btn>
             <v-btn @click="this.$router.push({ name: 'Home' })" class="text-decoration-underline" color="primary"
               variant="text">Cancel</v-btn>
             <v-spacer></v-spacer>
             <v-btn v-if="editMode" color="error" variant="elevated"
-              @click="openDialog('delete', 'Do you want to delete this list?', 'Deleting this list will DELETE it for all users added. All movies and data will be lost.')">Delete
-              List</v-btn>
+              @click="openDialog('delete', 'Do you want to delete this list?', 'Deleting this list will DELETE it for all users added. All movies and data will be lost.')">Delete</v-btn>
           </v-col>
         </template>
       </MainLayout>
@@ -67,7 +66,7 @@ export default {
     return {
       userStore: useUserStore(),
       listStore: useListStore(),
-      form: {} as Form,
+      form: { length: 1, users: [], name: "" } as Form,
       rules: [
         (value) => {
           if (value) {
@@ -104,7 +103,8 @@ export default {
   methods: {
     async createNewList() {
       //console.debug(this.form);
-      const maxLength = this.form.length * (this.form.users.length + 1);
+      const maxLength = this.form.length * (this.form.users?.length || 0 + 1);
+      console.debug("Max length", maxLength, this.form.users);
       await this.listStore.postNewList(this.form.name, maxLength, this.form.users, this.userStore.getUser);
       this.$router.push({ name: "ListView", params: { id: this.listStore.selectedList.uuid } });
     },

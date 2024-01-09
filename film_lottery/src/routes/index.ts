@@ -5,7 +5,7 @@ import MovieCatalogView from "@/components/views/MovieCatalogView.vue";
 import PickMovieView from "@/components/views/PickMovieView.vue";
 import SignUpView from "@/components/views/SignUpView.vue";
 import LoginView from "@/components/views/LoginView.vue";
-import { createRouter, createWebHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
+import { createRouter, createWebHashHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
 import { useUserStore } from "@/stores/usersStore";
 
 const routes: RouteRecordRaw[] = [
@@ -89,7 +89,7 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   strict: true,
   routes,
 });
