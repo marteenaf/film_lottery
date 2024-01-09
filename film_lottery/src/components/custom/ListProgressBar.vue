@@ -1,6 +1,11 @@
 <template>
   <div class="progress-wrapper">
-    <h4 v-if="showText" class="text">{{ value }}/{{ subtotal }}/{{ total }}</h4>
+    <p v-if="showText" class="text">{{ value }} {{ valueLabel }} / {{ subtotal }} {{
+      subtotalLabel }}</p>
+    <v-spacer></v-spacer>
+    <p>{{ total }} {{ totalLabel || 'total' }}</p>
+  </div>
+  <div class="progress-wrapper">
     <div class="bar" :style="getVars">
       <div class="value-bar"></div>
       <div class="subtotal-bar"></div>
@@ -8,7 +13,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   name: "ListProgressBar",
   props: {
@@ -16,7 +21,10 @@ export default {
     subtotal: Number,
     total: Number,
     barHeight: Number,
-    showText: Boolean
+    showText: Boolean,
+    valueLabel: String,
+    subtotalLabel: String,
+    totalLabel: String,
   },
   computed: {
     getVars() {

@@ -8,9 +8,12 @@
     </v-card>
   </v-overlay>
 </template>
-<script>
+<script lang="ts">
 export default {
   name: "OverlayLayout",
+  props: {
+    overrideRoute: Object
+  },
   data() {
     return {
       overlay: false,
@@ -23,7 +26,11 @@ export default {
     close() {
       this.overlay = false;
       const parentRoute = this.$route.matched[0];
-      this.$router.push({ name: parentRoute.name, params: parentRoute.params, meta: parentRoute.meta });
+      if (!this.overrideRoute) {
+        this.$router.push({ name: parentRoute.name, params: parentRoute.params, meta: parentRoute.meta });
+      } else {
+        this.$router.push(this.overrideRoute);
+      }
     }
   }
 };
@@ -40,5 +47,9 @@ export default {
 
 .gap {
   gap: 8px;
+}
+
+.v-overlay__scrim {
+  pointer-events: none !important;
 }
 </style>

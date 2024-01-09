@@ -26,7 +26,7 @@
     </MainLayout>
   </OverlayLayout>
 </template>
-<script>
+<script lang="ts">
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
 import MainLayout from "@/components/layouts/MainLayout.vue";
 import OverlayLayout from "@/components/layouts/OverlayLayout.vue";
@@ -59,8 +59,8 @@ export default {
       if (this.listStore.checkUserCanAddMovies && this.listStore.selectedList.movies.length < this.listStore.selectedList.maxLength) {
         this.inList[id] = true;
         this.listStore.addMovie(id, this.userStore.getUser);
-        console.debug(this.listStore.selectedList);
-        console.debug("Check in list", this.inList);
+        //console.debug(this.listStore.selectedList);
+        //console.debug("Check in list", this.inList);
       }
 
     },
@@ -70,8 +70,8 @@ export default {
         this.inList[id] = false;
       }
 
-      console.debug(this.listStore.selectedList);
-      console.debug("Check in list", this.inList);
+      //console.debug(this.listStore.selectedList);
+      //console.debug("Check in list", this.inList);
     },
     updateList(id, watched) {
       if (!watched) {
@@ -80,6 +80,7 @@ export default {
         } else {
           this.addToList(id);
         }
+        this.searchText = "";
       }
     },
     async patchList() {
