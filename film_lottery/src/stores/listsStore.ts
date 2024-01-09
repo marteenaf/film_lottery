@@ -147,6 +147,25 @@ export const useListStore = defineStore("listStore", {
       await updateList(id, doc);
       this.selectedList = null;
       this.allLists.splice(index, 1);
+    },
+    async editList(name, maxLength, users) {
+      const myList = this.selectedList;
+      myList.name = name;
+      myList.maxLength = maxLength;
+      myList.users = [...users];
+      myList.movies = myList.movies.filter(m => myList.users.includes(m.addedBy) || m.addedBy == myList.createdBy);
+
+      if (!myList.movies.find(m => m.dbid == myList.lastPicked)) {
+        myList.lastPicked = null;
+      }
+
+      const id = myList.uuid;
+      const doc = JSON.parse(JSON.stringify(myList));
+      delete doc.uuid;
+      delete doc._id;
+
+      await updateList(id, doc);
+
     }
 
   }
