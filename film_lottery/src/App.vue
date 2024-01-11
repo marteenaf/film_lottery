@@ -12,6 +12,7 @@
         </template>
       </v-app-bar>
       <v-main>
+        <router-view name="overlay"></router-view>
         <router-view></router-view>
       </v-main>
     </v-layout>
@@ -38,8 +39,15 @@ export default {
   },
   methods: {
     async logout() {
-      await this.userStore.logoutUser();
-      this.$router.push({ name: "LoginView" });
+      const confirmation = await confirm("You will be logged out of the session");
+      if (confirmation) {
+        //send request to logout route
+        //logout from the store
+        await this.userStore.logoutUser();
+        this.$router.push({ name: "LoginView" });
+      } else {
+        return false;
+      }
     }
   },
   computed: {

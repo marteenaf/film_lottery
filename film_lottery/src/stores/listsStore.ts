@@ -10,6 +10,7 @@ export const useListStore = defineStore("listStore", {
     return {
       allLists: [] as List[],
       selectedList: null,
+      userStats: false
     };
   },
   getters: {
@@ -46,7 +47,7 @@ export const useListStore = defineStore("listStore", {
       }
 
       return null;
-    }
+    },
   },
   actions: {
     async queryListsByUsers() {

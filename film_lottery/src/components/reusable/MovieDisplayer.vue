@@ -1,26 +1,38 @@
 <template>
-  <v-card :variant="movie.watched ? 'tonal' : 'outlined'" class="d-flex">
-    <v-card-item class="pa-2"><img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" /></v-card-item>
+  <v-card variant="outlined" :class="['d-flex', 'mb-2',]" min-height="130px" @click="movieDetails"
+    style="cursor: pointer;">
+    <v-card-item class="pa-0 pl-1">
+      <v-btn style="opacity:100%!important" icon="more_vert" size="x-small" @click="movieDetails" variant="plain"></v-btn>
+    </v-card-item>
+    <v-card-item :class="['pa-2', movie.watched ? 'opacity' : '']">
+      <img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" align="center" />
+    </v-card-item>
     <v-card-item class="pa-2" style="flex:auto !important;">
       <v-card-title v-if="movie.watched">WATCHED</v-card-title>
       <v-card-title
         :class="[movie.watched ? 'watched' : '', 'text-wrapped', screen ? 'small-screen-title' : '', 'mb-2']">{{
           movieTitle }}</v-card-title>
-      <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ releaseYear }} {{ duration }}m</v-card-subtitle>
+      <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ releaseYear }} {{ duration }}</v-card-subtitle>
       <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ addedBy }}</v-card-subtitle>
     </v-card-item>
     <v-card-actions class="pa-2">
       <slot name="add-list"></slot>
     </v-card-actions>
   </v-card>
+  <MovieDetailsDisplayer ref="overlay" :movieId="movie.id"></MovieDetailsDisplayer>
 </template>
 <script lang="ts">
+import MovieDetailsDisplayer from "../custom/MovieDetailsDisplayer.vue";
 export default {
   name: "MovieDisplayer",
   props: ["movie"],
-  data() {
-    return {
-    };
+  components: {
+    MovieDetailsDisplayer
+  },
+  methods: {
+    async movieDetails() {
+      await this.$refs.overlay.open();
+    }
   },
   computed: {
     movieTitle() {
@@ -36,7 +48,11 @@ export default {
       return this.movie?.poster_path ? this.movie.poster_path : "";
     },
     duration() {
-      return this.movie?.runtime;
+      let result = this.movie?.runtime;
+      if (result) {
+        result += "m";
+      }
+      return result;
     },
     screen() {
       return this.$vuetify.display.name == "xs";
@@ -61,5 +77,9 @@ export default {
 .small-screen-subtitle {
   font-size: 0.75rem !important;
   line-height: 1rem !important;
+}
+
+.opacity {
+  opacity: 20%;
 }
 </style>
