@@ -2,23 +2,27 @@
   <MainLayout>
     <template #content>
       <v-col>
-        <div class="d-flex flex-row">
-          <h1>My Lists</h1>
-          <v-spacer></v-spacer>
+        <div class="d-flex flex-row align-start">
+          <h2 class="mr-4">My Lists</h2>
+          <v-switch v-model="listStore.userStats" :label="listStore.userStats ? 'User stats' : 'List stats'"
+            density="compact" hide-details color="info"></v-switch>
         </div>
-        <v-list lines="two">
+        <v-list lines="three">
           <v-list-item v-for="list in listStore.allLists" :key="list.uuid" active-color="primary" :value="list.uuid"
             @click="viewList(list.uuid)">
             <template #default>
-              <v-list-item-title>
-                <h4>{{ list.name }}</h4>
+              <v-list-item-title class="pb-2">
+                <h3>{{ list.name }}</h3>
+                <p>created by {{ list.createdBy }}</p>
               </v-list-item-title>
-              <ListProgressBar :barHeight="15" :showText="true" :total="list.maxLength" :subtotal="list.movies.length"
-                :value="list.movies.filter(m => m.watched).length" valueLabel="watched" subtotalLabel="added">
-              </ListProgressBar>
+              <v-list-item-subtitle>
+                <ListStatsDisplayer v-model:userStats="listStore.userStats" :list="list" :currentUser="user">
+                </ListStatsDisplayer>
+              </v-list-item-subtitle>
             </template>
-            <template #append v-if="list.createdBy == user">
-              <v-btn icon="more_vert" variant="plain" @click.stop="editList(list.uuid)" class="ml-3"></v-btn>
+            <template #append>
+              <v-btn :icon="list.createdBy != user ? 'more_vert' : 'edit'" variant="plain"
+                @click.stop="editList(list.uuid)" class="ml-3" size="x-small"></v-btn>
             </template>
           </v-list-item>
         </v-list>
@@ -34,14 +38,14 @@
   <router-view></router-view>
 </template>
 <script lang="ts">
-import ListProgressBar from "@/components/custom/ListProgressBar.vue";
+import ListStatsDisplayer from "../custom/ListStatsDisplayer.vue";
 import MainLayout from "@/components/layouts/MainLayout.vue";
 import { useListStore } from "@/stores/listsStore";
 import { useUserStore } from "@/stores/usersStore";
 export default {
   name: "HomeView",
   components: {
-    ListProgressBar,
+    ListStatsDisplayer,
     MainLayout
   },
   data() {
@@ -65,8 +69,24 @@ export default {
     editList(value) {
       console.debug("Editing list here");
       this.$router.push({ name: "EditListView", params: { id: value } });
+    },
+    userMaxLength(list) {
+      const result = list.maxLength / (list.users.length + 1);
+      return result;
+    },
+    userAddedMovies(list) {
+      const result = list.movies.filter(m => m.addedBy == this.user).length;
+      return result;
+    },
+    userWatchedMovies(list) {
+
+      const result = list.movies.filter(m => m.addedBy == this.user && m.watched).length;
+      return result;
     }
   },
+  computed: {
+
+  }
 };
 </script>
 <style scoped></style>

@@ -17,29 +17,58 @@ export async function getLists() {
 export async function getListsByUser(user) {
   const agg = [
     {
-      "$match": {
-        "$expr": {
-          "$or": [
+      $match: {
+        $expr: {
+          $or: [
             {
-              "$in": [
-                user, "$users"
-              ]
-            }, {
-              "$eq": [
-                "$createdBy", user
-              ]
-            }
-          ]
-        }
-      }
-    }, {
-      "$match":
-      {
-        "$expr": {
-          "$ne": ["$softDelete", true],
+              $in: [user, "$users"],
+            },
+            {
+              $eq: ["$createdBy", user],
+            },
+          ],
         },
       },
-    }
+    },
+    {
+      $match: {
+        $expr: {
+          $ne: ["$softDelete", true],
+        },
+      },
+    },
+    {
+      $addFields: {
+        customOrder: {
+          $switch: {
+            branches: [
+              {
+                case: {
+                  $eq: [
+                    "$createdBy",
+                    user,
+                  ],
+                },
+                then: 1,
+              },
+            ],
+            default: 2,
+          },
+        },
+      },
+    },
+    {
+      $sort: {
+        customOrder: 1,
+        createdBy: 1,
+        _id: -1,
+      },
+    },
+    {
+      $project: {
+        customOrder: 0,
+      },
+    },
   ];
   const url = `${baseUrl}/mongo/api/${mongoDatabase}/${mongoListsCollection}/aggregate?pipeline=${JSON.stringify(agg)}`;
   const response = await getRequest(url);

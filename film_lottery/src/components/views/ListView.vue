@@ -1,6 +1,6 @@
 <template>
   <ListDisplayer v-if="authorised && mounted" :list="listStore.selectedList" @update-list="(e) => updateListMovie(e)"
-    :key="listStore.selectedList" @remove-movie="removeMovie" :user="userStore.getUser">
+    :key="listStore.selectedList" @remove-movie="removeMovie" :user="userStore.getUser" v-model:userStats="userStats">
   </ListDisplayer>
   <v-alert v-if="!authorised" type="error" title="Not authorised">This list cannot be accessed by the current
     user!</v-alert>
@@ -23,6 +23,7 @@ export default {
       loaded: false,
       authorised: false,
       mounted: false,
+      userStats: false
     };
   },
   async mounted() {
