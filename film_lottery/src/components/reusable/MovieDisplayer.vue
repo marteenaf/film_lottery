@@ -1,12 +1,13 @@
 <template>
-  <v-card variant="outlined" :class="['d-flex', 'mb-2', movie.watched ? 'opacity' : '']" min-height="130px">
+  <v-card variant="outlined" :class="['d-flex', 'mb-2', movie.watched ? 'opacity' : '']" min-height="130px"
+    @click="movieDetails">
     <v-card-item class="pa-2"><img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" /></v-card-item>
     <v-card-item class="pa-2" style="flex:auto !important;">
       <v-card-title v-if="movie.watched">WATCHED</v-card-title>
       <v-card-title
         :class="[movie.watched ? 'watched' : '', 'text-wrapped', screen ? 'small-screen-title' : '', 'mb-2']">{{
           movieTitle }}</v-card-title>
-      <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ releaseYear }} {{ duration }}m</v-card-subtitle>
+      <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ releaseYear }} {{ duration }}</v-card-subtitle>
       <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ addedBy }}</v-card-subtitle>
     </v-card-item>
     <v-card-actions class="pa-2">
@@ -22,6 +23,11 @@ export default {
     return {
     };
   },
+  methods: {
+    movieDetails() {
+      this.$router.push({ name: "MovieDetailsView", params: { movieId: this.movie.id } });
+    }
+  },
   computed: {
     movieTitle() {
       return this.movie?.title.toString();
@@ -36,7 +42,11 @@ export default {
       return this.movie?.poster_path ? this.movie.poster_path : "";
     },
     duration() {
-      return this.movie?.runtime;
+      let result = this.movie?.runtime;
+      if (result) {
+        result += "m";
+      }
+      return result;
     },
     screen() {
       return this.$vuetify.display.name == "xs";

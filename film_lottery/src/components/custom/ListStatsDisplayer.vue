@@ -28,7 +28,6 @@ export default {
   },
   mounted() {
     this.sortUsers();
-    console.debug(this.allUsers);
   },
   methods: {
     userMaxLength() {

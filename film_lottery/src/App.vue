@@ -12,6 +12,7 @@
         </template>
       </v-app-bar>
       <v-main>
+        <router-view name="overlay"></router-view>
         <router-view></router-view>
       </v-main>
     </v-layout>

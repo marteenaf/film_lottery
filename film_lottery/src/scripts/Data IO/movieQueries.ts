@@ -8,6 +8,13 @@ export async function fetchMovieDetails(id) {
   return result;
 }
 
+export async function fetchMovieCredits(id) {
+  const url = `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`;
+  const result = await queryMovieDatabase(url);
+  //console.debug("My details result", result);
+  return result;
+}
+
 export async function searchMovies(string) {
   const url = `https://api.themoviedb.org/3/search/movie?query=${string}&include_adult=false&language=en-US&page=1`;
   const result = await queryMovieDatabase(url);
