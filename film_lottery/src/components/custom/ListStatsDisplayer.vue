@@ -7,7 +7,7 @@
   <div v-else v-for="user in allUsers" :key="user">
     <ListProgressBar :barHeight="20" :showText="true" :value-label="valueLabel" :subtotal-label="subtotalLabel"
       :total-label="totalLabel" :value="userWatchedMovies(user)" :subtotal="userAddedMovies(user)"
-      :total="userMaxLength()" color-theme="info" :general-label="user">
+      :total="userMaxLength()" color-theme="secondary" :general-label="user">
     </ListProgressBar>
     <v-divider class="my-2"></v-divider>
   </div>

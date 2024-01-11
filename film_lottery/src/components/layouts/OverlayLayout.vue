@@ -4,6 +4,8 @@
       <v-icon>close</v-icon>
     </v-btn>
     <v-card class="wrapper">
+      <v-card-title class="font-weight-bold pb-0">{{ title }}</v-card-title>
+      <v-card-subtitle>{{ subtitle }}</v-card-subtitle>
       <slot></slot>
     </v-card>
   </v-overlay>
@@ -12,7 +14,9 @@
 export default {
   name: "OverlayLayout",
   props: {
-    overrideRoute: Object
+    overrideRoute: Object,
+    title: String,
+    subtitle: String
   },
   data() {
     return {

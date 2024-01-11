@@ -5,7 +5,7 @@
         <div class="d-flex flex-row align-start">
           <h2 class="mr-4">My Lists</h2>
           <v-switch v-model="listStore.userStats" :label="listStore.userStats ? 'User stats' : 'List stats'"
-            density="compact" hide-details color="info"></v-switch>
+            density="compact" hide-details color="secondary"></v-switch>
         </div>
         <v-list lines="three">
           <v-list-item v-for="list in listStore.allLists" :key="list.uuid" active-color="primary" :value="list.uuid"
@@ -21,8 +21,8 @@
               </v-list-item-subtitle>
             </template>
             <template #append>
-              <v-btn :icon="list.createdBy != user ? 'more_vert' : 'edit'" variant="plain"
-                @click.stop="editList(list.uuid)" class="ml-3" size="x-small"></v-btn>
+              <v-btn :icon="list.createdBy != user ? 'more_vert' : 'edit'" variant="plain" @click.stop="editList(list)"
+                class="ml-3" size="x-small"></v-btn>
             </template>
           </v-list-item>
         </v-list>
@@ -61,6 +61,7 @@ export default {
   },
   mounted() {
     console.debug("[Home View] Mounting...", this.user);
+    this.listStore.selectedList = null;
   },
   methods: {
     viewList(value) {
@@ -68,7 +69,11 @@ export default {
     },
     editList(value) {
       console.debug("Editing list here");
-      this.$router.push({ name: "EditListView", params: { id: value } });
+      if (this.user == value.createdBy) {
+        this.$router.push({ name: "EditListView", params: { id: value.uuid } });
+      } else {
+        this.$router.push({ name: "DataListView", params: { id: value.uuid } });
+      }
     },
     userMaxLength(list) {
       const result = list.maxLength / (list.users.length + 1);
@@ -79,7 +84,6 @@ export default {
       return result;
     },
     userWatchedMovies(list) {
-
       const result = list.movies.filter(m => m.addedBy == this.user && m.watched).length;
       return result;
     }

@@ -33,7 +33,6 @@ export default {
   },
   computed: {
     getVars() {
-      console.debug(this.$vuetify.theme.current.colors);
       let vars = {
         "--width-subTotal": ((this.subtotal - this.value) / this.total) * 100 + "%",
         "--width-total": (((this.total - this.subtotal) / this.total) * 100) + "%",
@@ -46,7 +45,6 @@ export default {
         "--value-rounded": this.value == this.total ? this.barHeight / 2 + "px" : "0px",
         "--value-color": (this.colorTheme ? this.$vuetify.theme.current.colors[this.colorTheme] : this.$vuetify.theme.current.colors["primary"]),
       };
-      console.debug(vars["--value-color"]);
       return vars;
     },
   }

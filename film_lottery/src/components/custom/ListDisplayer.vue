@@ -5,7 +5,7 @@
         <div class="d-flex flex-row align-start">
           <h2 class="text-left mr-4">{{ list.name }}</h2>
           <v-switch :label="listStore.userStats ? 'User stats' : 'List stats'" v-model="listStore.userStats" hide-details
-            density="compact" color="info"></v-switch>
+            density="compact" color="secondary"></v-switch>
         </div>
         <ListStatsDisplayerVue v-model:userStats="listStore.userStats" :list="list" :currentUser="user">
         </ListStatsDisplayerVue>
@@ -100,10 +100,11 @@ export default {
       const moviesAdded = this.list.movies.filter(m => m.addedBy == user).length;
       const maxPerUser = this.list.maxLength / (this.list.users.length + 1);
       const remaining = maxPerUser - moviesAdded;
-      console.debug("Remaining movies", remaining, this.list.movies.length, this.allMovies.length);
+      console.debug("Remaining movies", remaining, this.list.maxLength, this.list.users.length + 1, this.list.movies.length, this.allMovies.length);
       return remaining;
     },
     userMovies(user) {
+      console.debug("user movies", this.allMovies?.filter(m => m.addedBy == user));
       return this.allMovies?.filter(m => m.addedBy == user);
     },
     sortUsers() {
