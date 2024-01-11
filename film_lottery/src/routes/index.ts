@@ -5,7 +5,8 @@ import MovieCatalogView from "@/components/views/MovieCatalogView.vue";
 import PickMovieView from "@/components/views/PickMovieView.vue";
 import SignUpView from "@/components/views/SignUpView.vue";
 import LoginView from "@/components/views/LoginView.vue";
-import { createRouter, createWebHashHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
+import EditListView from "@/components/views/EditListView.vue";
+import { createRouter, createWebHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
 import { useUserStore } from "@/stores/usersStore";
 
 const routes: RouteRecordRaw[] = [
@@ -14,7 +15,7 @@ const routes: RouteRecordRaw[] = [
     path: "/",
     redirect: "/login",
     meta: {
-      requiresAuth: true
+      requiresAuth: false
     }
   },
   {
@@ -46,7 +47,7 @@ const routes: RouteRecordRaw[] = [
       component: MovieCatalogView,
       meta: {
         requiresAuth: true,
-      }
+      },
     },],
     meta: {
       requiresAuth: true,
@@ -65,7 +66,15 @@ const routes: RouteRecordRaw[] = [
     path: "/list/:id/edit",
     name: "EditListView",
     props: true,
-    component: NewListView,
+    components: { default: HomeView, overlay: EditListView },
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: "/list/:id/data",
+    name: "DataListView",
+    props: true,
+    components: { default: HomeView, overlay: EditListView },
     meta: {
       requiresAuth: true
     }
@@ -89,46 +98,10 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(process.env.VUE_APP_BASE_URL),
   strict: true,
   routes,
 });
-
-////check authorisation
-//router.beforeResolve(async (to, from) => {
-//  const store = useUserStore();
-
-//  console.group("Routing Information");
-//  console.log("from route", from.path, from.meta.requiresAuth, from);
-//  console.log("to route", to.path, to.meta.requiresAuth, to);
-//  console.log("authentication status", store.getAuthentication, store.getUser);
-//  console.groupEnd();
-
-//  //simplofy this
-//  if (from !== START_LOCATION) {
-//    if (to.meta.requiresAuth) {
-//      //post request to backend to request the user
-//      if (!store.getAuthentication) {
-//        //post request to check for authentication? and re-direct?
-//        return { name: "LoginView" };
-//      }
-//    } else {
-//      //handle authentication routes (like login) only if coming from a route that requires
-//      if (from.meta.requiresAuth) {
-//        const confirmation = await confirm("You will be logged out of the session");
-//        if (confirmation) {
-//          //send request to logout route
-//          //logout from the store
-//          store.logoutUser();
-//        } else {
-//          return false;
-//        }
-//      }
-//    }
-//  }
-//  //re-load
-
-//});
 
 router.beforeEach(async (to, from) => {
 

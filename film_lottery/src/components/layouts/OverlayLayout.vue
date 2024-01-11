@@ -4,6 +4,8 @@
       <v-icon>close</v-icon>
     </v-btn>
     <v-card class="wrapper">
+      <v-card-title class="font-weight-bold pb-0">{{ title }}</v-card-title>
+      <v-card-subtitle>{{ subtitle }}</v-card-subtitle>
       <slot></slot>
     </v-card>
   </v-overlay>
@@ -12,7 +14,9 @@
 export default {
   name: "OverlayLayout",
   props: {
-    overrideRoute: Object
+    overrideRoute: [Object, Number, String],
+    title: String,
+    subtitle: String,
   },
   data() {
     return {
@@ -29,7 +33,15 @@ export default {
       if (!this.overrideRoute) {
         this.$router.push({ name: parentRoute.name, params: parentRoute.params, meta: parentRoute.meta });
       } else {
-        this.$router.push(this.overrideRoute);
+        if (typeof this.overrideRoute == "number") {
+          this.$router.go(-1);
+        } else if (this.overrideRoute == "close") {
+
+        } else {
+          console.debug("override route", this.overrideRoute);
+          this.$router.push(this.overrideRoute);
+        }
+
       }
     }
   }
