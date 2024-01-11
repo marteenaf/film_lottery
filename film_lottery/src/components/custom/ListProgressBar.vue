@@ -1,9 +1,6 @@
 <template>
   <div class="progress-wrapper">
-    <p v-if="showText" class="text">{{ value }} {{ valueLabel }} / {{ subtotal }} {{
-      subtotalLabel }}</p>
-    <v-spacer></v-spacer>
-    <p>{{ total }} {{ totalLabel || 'total' }}</p>
+    <p v-if="showText"><strong>{{ generalLabel }}</strong></p>
   </div>
   <div class="progress-wrapper">
     <div class="bar" :style="getVars">
@@ -11,6 +8,12 @@
       <div class="subtotal-bar"></div>
       <div class="total-bar"></div>
     </div>
+  </div>
+  <div class="progress-wrapper">
+    <p v-if="showText" class="text">{{ value }} {{ valueLabel }} / {{ subtotal }} {{
+      subtotalLabel }}</p>
+    <v-spacer></v-spacer>
+    <p>{{ total }} {{ totalLabel || 'total' }}</p>
   </div>
 </template>
 <script lang="ts">
@@ -25,9 +28,12 @@ export default {
     valueLabel: String,
     subtotalLabel: String,
     totalLabel: String,
+    colorTheme: String,
+    generalLabel: String
   },
   computed: {
     getVars() {
+      console.debug(this.$vuetify.theme.current.colors);
       let vars = {
         "--width-subTotal": ((this.subtotal - this.value) / this.total) * 100 + "%",
         "--width-total": (((this.total - this.subtotal) / this.total) * 100) + "%",
@@ -38,7 +44,9 @@ export default {
         "--subtotal-rounded-right": this.subtotal == this.total ? this.barHeight / 2 + "px" : "0px",
         "--total-rounded": this.subtotal == 0 ? this.barHeight / 2 + "px" : "0px",
         "--value-rounded": this.value == this.total ? this.barHeight / 2 + "px" : "0px",
+        "--value-color": (this.colorTheme ? this.$vuetify.theme.current.colors[this.colorTheme] : this.$vuetify.theme.current.colors["primary"]),
       };
+      console.debug(vars["--value-color"]);
       return vars;
     },
   }
@@ -57,14 +65,14 @@ export default {
 
 .value-bar {
   height: 100%;
-  background: rgb(var(--v-theme-primary));
+  background: var(--value-color);
   width: var(--width-value);
   border-radius: var(--border-rounded) var(--value-rounded) var(--value-rounded) var(--border-rounded);
 }
 
 .subtotal-bar {
   height: 100%;
-  background-color: rgb(var(--v-theme-primary));
+  background-color: var(--value-color);
   opacity: 0.5;
   width: var(--width-subTotal);
   border-radius: var(--subtotal-rounded-left) var(--subtotal-rounded-right) var(--subtotal-rounded-right) var(--subtotal-rounded-left);
@@ -81,7 +89,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 10px 0px;
-  gap: 10px
+  /*margin: 4px 0px;*/
+  padding: 2px 0px;
 }
 </style>

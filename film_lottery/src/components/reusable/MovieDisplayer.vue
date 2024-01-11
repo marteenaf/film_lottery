@@ -1,5 +1,5 @@
 <template>
-  <v-card :variant="movie.watched ? 'tonal' : 'outlined'" class="d-flex">
+  <v-card variant="outlined" :class="['d-flex', 'mb-2', movie.watched ? 'opacity' : '']" min-height="130px">
     <v-card-item class="pa-2"><img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" /></v-card-item>
     <v-card-item class="pa-2" style="flex:auto !important;">
       <v-card-title v-if="movie.watched">WATCHED</v-card-title>
@@ -61,5 +61,9 @@ export default {
 .small-screen-subtitle {
   font-size: 0.75rem !important;
   line-height: 1rem !important;
+}
+
+.opacity {
+  opacity: var(--v-disabled-opacity);
 }
 </style>
