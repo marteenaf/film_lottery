@@ -1,7 +1,12 @@
 <template>
-  <v-card variant="outlined" :class="['d-flex', 'mb-2', movie.watched ? 'opacity' : '']" min-height="130px"
-    @click="movieDetails">
-    <v-card-item class="pa-2"><img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" /></v-card-item>
+  <v-card variant="outlined" :class="['d-flex', 'mb-2',]" min-height="130px" @click="movieDetails"
+    style="cursor: pointer;">
+    <v-card-item class="pa-0 pl-1">
+      <v-btn style="opacity:100%!important" icon="more_vert" size="x-small" @click="movieDetails" variant="plain"></v-btn>
+    </v-card-item>
+    <v-card-item :class="['pa-2', movie.watched ? 'opacity' : '']">
+      <img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" align="center" />
+    </v-card-item>
     <v-card-item class="pa-2" style="flex:auto !important;">
       <v-card-title v-if="movie.watched">WATCHED</v-card-title>
       <v-card-title
@@ -14,18 +19,19 @@
       <slot name="add-list"></slot>
     </v-card-actions>
   </v-card>
+  <MovieDetailsDisplayer ref="overlay" :movieId="movie.id"></MovieDetailsDisplayer>
 </template>
 <script lang="ts">
+import MovieDetailsDisplayer from "../custom/MovieDetailsDisplayer.vue";
 export default {
   name: "MovieDisplayer",
   props: ["movie"],
-  data() {
-    return {
-    };
+  components: {
+    MovieDetailsDisplayer
   },
   methods: {
-    movieDetails() {
-      this.$router.push({ name: "MovieDetailsView", params: { movieId: this.movie.id } });
+    async movieDetails() {
+      await this.$refs.overlay.open();
     }
   },
   computed: {
@@ -74,6 +80,6 @@ export default {
 }
 
 .opacity {
-  opacity: var(--v-disabled-opacity);
+  opacity: 20%;
 }
 </style>

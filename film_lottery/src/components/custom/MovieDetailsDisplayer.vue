@@ -1,20 +1,28 @@
 <template>
-  <OverlayLayout ref="overlay" :title="movieTitle" :subtitle="releaseYear" :override-route="path">
-    <v-container>
+  <OverlayLayout ref="overlay" :title="originalTitle"
+    :subtitle="releaseYear + ' ' + (originalLanguage !== 'en' ? movieTitle : '')" :override-route="'close'">
+    <v-container v-if="movie">
       <v-row>
         <v-col cols="6">
           <img :src="'https://image.tmdb.org/t/p/original/' + posterPath" style="width:100%" />
         </v-col>
-        <v-col cols="6">
-          <h3>Director</h3>
+        <v-col cols="6" class="d-flex flex-column">
+          <h5>Director</h5>
           <p v-for="i in director" :key="i">{{ i }}</p>
-          <h3>Cast</h3>
+          <v-spacer></v-spacer>
+          <h5>Cast</h5>
           <p v-for="i in cast" :key="i">{{ i }}</p>
+          <v-spacer></v-spacer>
+          <h5>Duration</h5>
+          <p>{{ duration }}</p>
+          <v-spacer></v-spacer>
+          <h5>Genre</h5>
+          <p>{{ genres }}</p>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <p>{{ movie.overview }}</p>
+          <p>{{ overview }}</p>
         </v-col>
       </v-row>
     </v-container>
@@ -22,22 +30,36 @@
 </template>
 <script lang="ts">
 import OverlayLayout from "../layouts/OverlayLayout.vue";
+import { fetchMovieCredits, fetchMovieDetails } from "@/scripts/Data IO/movieQueries";
 export default {
   name: "MovieDetailsDisplayer",
-  props: ["movie"],
+  props: ["movieId"],
   components: {
     OverlayLayout
   },
-  mounted() {
-    this.$refs.overlay.open();
-    console.debug(this.movie);
+  data() {
+    return {
+      movie: null,
+    };
+  },
+  methods: {
+    async open() {
+      await this.getFullDetails();
+      this.$refs.overlay.open();
+      //console.debug("movie", this.movie);
+    },
+    async getFullDetails() {
+      const detailsResult = await fetchMovieDetails(this.movieId);
+      const creditsResult = await fetchMovieCredits(this.movieId);
+      this.movie = { ...detailsResult.data, ...creditsResult.data };
+    }
   },
   computed: {
     movieTitle() {
-      return this.movie?.title.toString();
+      return this.movie?.title?.toString();
     },
     releaseYear() {
-      return this.movie?.release_date.split("-")[0];
+      return this.movie?.release_date?.split("-")[0];
     },
     posterPath() {
       return this.movie?.poster_path ? this.movie.poster_path : "";
@@ -48,6 +70,9 @@ export default {
         result += "m";
       }
       return result;
+    },
+    overview() {
+      return this.movie?.overview;
     },
     path() {
       const lastPath = this.$router.options.history.state.back;
@@ -60,6 +85,15 @@ export default {
     director() {
       const result = this.movie?.crew?.filter(c => c.job == "Director").map(c => c.name);
       return result;
+    },
+    originalTitle() {
+      return this.movie?.original_title;
+    },
+    originalLanguage() {
+      return this.movie?.original_language;
+    },
+    genres() {
+      return this.movie?.genres.map(g => g.name).reduce((acc, curr) => { return curr + ", " + acc; }, "");
     }
   }
 };
