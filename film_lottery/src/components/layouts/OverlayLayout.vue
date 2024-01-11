@@ -14,9 +14,9 @@
 export default {
   name: "OverlayLayout",
   props: {
-    overrideRoute: [Object, Number],
+    overrideRoute: [Object, Number, String],
     title: String,
-    subtitle: String
+    subtitle: String,
   },
   data() {
     return {
@@ -30,16 +30,18 @@ export default {
     close() {
       this.overlay = false;
       const parentRoute = this.$route.matched[0];
-      console.debug(typeof this.overrideRoute);
       if (!this.overrideRoute) {
         this.$router.push({ name: parentRoute.name, params: parentRoute.params, meta: parentRoute.meta });
       } else {
         if (typeof this.overrideRoute == "number") {
           this.$router.go(-1);
+        } else if (this.overrideRoute == "close") {
+
         } else {
           console.debug("override route", this.overrideRoute);
           this.$router.push(this.overrideRoute);
         }
+
       }
     }
   }

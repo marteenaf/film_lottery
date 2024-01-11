@@ -6,9 +6,8 @@ import PickMovieView from "@/components/views/PickMovieView.vue";
 import SignUpView from "@/components/views/SignUpView.vue";
 import LoginView from "@/components/views/LoginView.vue";
 import EditListView from "@/components/views/EditListView.vue";
-import { createRouter, createWebHashHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
 import { useUserStore } from "@/stores/usersStore";
-import MovieDetailsView from "@/components/views/MovieDetailsView.vue";
 
 const routes: RouteRecordRaw[] = [
 
@@ -95,21 +94,11 @@ const routes: RouteRecordRaw[] = [
     meta: {
       requiresGuest: true,
     }
-  },
-  {
-    path: "/movie/:movieId",
-    name: "MovieDetailsView",
-    components: { overlay: MovieDetailsView },
-    props: true,
-    meta: {
-      requiresAuth: true
-    }
   }
-
 ];
 
 export const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(process.env.VUE_APP_BASE_URL),
   strict: true,
   routes,
 });
