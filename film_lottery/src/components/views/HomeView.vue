@@ -22,7 +22,7 @@
             </template>
             <template #append>
               <v-btn :icon="list.createdBy != user ? 'more_vert' : 'edit'" variant="plain" @click.stop="editList(list)"
-                class="ml-3" size="x-small"></v-btn>
+                class="ml-3" size="small"></v-btn>
             </template>
           </v-list-item>
         </v-list>
