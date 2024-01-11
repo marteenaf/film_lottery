@@ -22,11 +22,6 @@
 </template>
 <script>
 import MainLayout from "@/components/layouts/MainLayout.vue";
-interface ListForm {
-  name: string,
-  length: number,
-  users: string[]
-}
 export default {
   name: "ListMetadataDisplayer",
   props: ["editable", "list", "callback", "buttonLabel", "cancelRoute"],
@@ -35,7 +30,7 @@ export default {
   },
   data() {
     return {
-      form: { name: "", length: 1, users: [] } as ListForm,
+      form: { name: "", length: 1, users: [] },
       rules: [
         (value) => {
           if (value) {

@@ -52,6 +52,9 @@ export default {
   },
   mounted() {
     this.$refs.overlay.open();
+    if (this.$route.query?.searchText) {
+      this.searchText = this.$route.query.searchText;
+    }
   },
   methods: {
     addToList(id) {
