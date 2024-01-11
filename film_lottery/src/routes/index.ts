@@ -5,6 +5,7 @@ import MovieCatalogView from "@/components/views/MovieCatalogView.vue";
 import PickMovieView from "@/components/views/PickMovieView.vue";
 import SignUpView from "@/components/views/SignUpView.vue";
 import LoginView from "@/components/views/LoginView.vue";
+import EditListView from "@/components/views/EditListView.vue";
 import { createRouter, createWebHashHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
 import { useUserStore } from "@/stores/usersStore";
 
@@ -65,7 +66,15 @@ const routes: RouteRecordRaw[] = [
     path: "/list/:id/edit",
     name: "EditListView",
     props: true,
-    component: NewListView,
+    component: EditListView,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: "/list/:id/data",
+    name: "DataListView",
+    props: true,
+    component: EditListView,
     meta: {
       requiresAuth: true
     }
