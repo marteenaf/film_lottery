@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-layout v-if="userStore.isAuthenticated" style="max-height:100vh!important">
+    <v-layout v-if="userStore.isAuthenticated" style="max-height:100dvh!important">
       <v-app-bar>
         <template v-slot:prepend>
           <v-app-bar-nav-icon><home-button :routePath="'/home'"></home-button></v-app-bar-nav-icon>
