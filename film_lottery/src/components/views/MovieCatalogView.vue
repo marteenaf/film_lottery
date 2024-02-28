@@ -1,15 +1,17 @@
 <template>
-  <OverlayLayout ref="overlay">
+  <OverlayLayout ref="overlay" title="Movie Catalogue" subtitle="Search for movies by title">
     <MainLayout>
+      <template #header>
+        <v-text-field :append-inner-icon="'search'" :label="'Search for movies'" v-model="searchText" clearable
+          style="max-height:80px !important"></v-text-field>
+      </template>
       <template #content>
         <v-col>
-          <h1>Movie catalog</h1>
-          <v-text-field :append-inner-icon="'search'" :label="'Search for movies'" v-model="searchText" clearable
-            style="max-height:80px !important"></v-text-field>
+          <!--<h1>Movie catalog</h1>-->
           <div style="flex:auto; overflow:scroll;">
             <MovieDisplayer v-for="movie in movieList" :key="movie" :movie="movie">
               <template #add-list>
-                <v-btn :icon="inList[movie.id] ? 'check' : 'add'" @click="updateList(movie.id, movie.watched)"
+                <v-btn :icon="inList[movie.id] ? 'check' : 'add'" @click.stop="updateList(movie.id, movie.watched)"
                   :color="inList[movie.id] ? 'success' : 'primary'" variant="elevated"></v-btn>
               </template>
             </MovieDisplayer>
@@ -25,6 +27,7 @@
       </template>
     </MainLayout>
   </OverlayLayout>
+  <router-view></router-view>
 </template>
 <script lang="ts">
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";

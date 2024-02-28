@@ -31,7 +31,7 @@ export default {
     },
     close() {
       this.overlay = false;
-      const parentRoute = this.$route.matched[0];
+      const parentRoute = this.$route.matched[this.$route.matched.length - 2];
       if (!this.overrideRoute) {
         this.$router.push({ name: parentRoute.name, params: parentRoute.params, meta: parentRoute.meta });
       } else {

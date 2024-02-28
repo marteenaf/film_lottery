@@ -8,6 +8,7 @@ import LoginView from "@/components/views/LoginView.vue";
 import EditListView from "@/components/views/EditListView.vue";
 import { createRouter, createWebHistory, RouteRecordRaw, START_LOCATION } from "vue-router";
 import { useUserStore } from "@/stores/usersStore";
+import MovieDetailsView from "@/components/views/MovieDetailsView.vue";
 
 const routes: RouteRecordRaw[] = [
 
@@ -48,7 +49,25 @@ const routes: RouteRecordRaw[] = [
       meta: {
         requiresAuth: true,
       },
-    },],
+      children: [{
+        path: "movie/:movieId",
+        name: "AddMovieDetails",
+        component: MovieDetailsView,
+        props: true,
+        meta: {
+          requiresAuth: true,
+        },
+      }]
+    },
+    {
+      path: "movie/:movieId",
+      name: "MovieDetails",
+      component: MovieDetailsView,
+      props: true,
+      meta: {
+        requiresAuth: true,
+      },
+    }],
     meta: {
       requiresAuth: true,
     }
@@ -107,11 +126,11 @@ router.beforeEach(async (to, from) => {
 
   const store = useUserStore();
 
-  //console.group("Routing Information");
-  //console.log("from route", from.path, from.meta.requiresAuth, from);
-  //console.log("to route", to.path, to.meta.requiresAuth, to);
-  //console.log("authentication status", store.getAuthentication, store.getUser);
-  //console.groupEnd();
+  console.group("Routing Information");
+  console.log("from route", from.path, from.meta.requiresAuth, from);
+  console.log("to route", to.path, to.meta.requiresAuth, to);
+  console.log("authentication status", store.getAuthentication, store.getUser);
+  console.groupEnd();
 
   if (!store.getAuthentication) {
     if (to.meta.requiresAuth) {
