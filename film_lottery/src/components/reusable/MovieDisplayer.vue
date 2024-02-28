@@ -2,7 +2,8 @@
   <v-card variant="outlined" :class="['d-flex', 'mb-2',]" min-height="130px" @click="movieDetails"
     style="cursor: pointer;">
     <v-card-item class="pa-0 pl-1">
-      <v-btn style="opacity:100%!important" icon="more_vert" size="x-small" @click="movieDetails" variant="plain"></v-btn>
+      <v-btn style="opacity:100%!important" icon="more_vert" size="x-small" @click.prevent="movieDetails"
+        variant="plain"></v-btn>
     </v-card-item>
     <v-card-item :class="['pa-2', movie.watched ? 'opacity' : '']">
       <img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" align="center" />
@@ -19,19 +20,19 @@
       <slot name="add-list"></slot>
     </v-card-actions>
   </v-card>
-  <MovieDetailsDisplayer ref="overlay" :movieId="movie.id"></MovieDetailsDisplayer>
 </template>
 <script lang="ts">
-import MovieDetailsDisplayer from "../custom/MovieDetailsDisplayer.vue";
 export default {
   name: "MovieDisplayer",
   props: ["movie"],
   components: {
-    MovieDetailsDisplayer
   },
   methods: {
     async movieDetails() {
-      await this.$refs.overlay.open();
+      const route = this.$route.path;
+      const newPath = route + "/movie/" + this.movie.id;
+      console.debug(newPath);
+      this.$router.push(newPath);
     }
   },
   computed: {

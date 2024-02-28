@@ -1,51 +1,60 @@
 <template>
   <OverlayLayout ref="overlay" :title="originalTitle"
-    :subtitle="releaseYear + ' ' + (originalLanguage !== 'en' ? movieTitle : '')" :override-route="'close'">
-    <v-container v-if="movie">
-      <v-row>
-        <v-col cols="6">
-          <img :src="'https://image.tmdb.org/t/p/original/' + posterPath" style="width:100%" />
-        </v-col>
-        <v-col cols="6" class="d-flex flex-column">
-          <h5>Director</h5>
-          <p v-for="i in director" :key="i">{{ i }}</p>
-          <v-spacer></v-spacer>
-          <h5>Cast</h5>
-          <p v-for="i in cast" :key="i">{{ i }}</p>
-          <v-spacer></v-spacer>
-          <h5>Duration</h5>
-          <p>{{ duration }}</p>
-          <v-spacer></v-spacer>
-          <h5>Genre</h5>
-          <p>{{ genres }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <p>{{ overview }}</p>
-        </v-col>
-      </v-row>
-    </v-container>
+    :subtitle="releaseYear + ' ' + (originalLanguage !== 'en' ? movieTitle : '')">
+    <ScrollableContentLayout>
+      <template #main-body>
+        <v-container v-if="movie">
+          <v-row>
+            <v-col cols="6">
+              <img :src="'https://image.tmdb.org/t/p/original/' + posterPath" style="width:100%" />
+            </v-col>
+            <v-col cols="6" class="d-flex flex-column">
+              <h5>Director</h5>
+              <p v-for="i in director" :key="i">{{ i }}</p>
+              <v-spacer></v-spacer>
+              <h5>Cast</h5>
+              <p v-for="i in cast" :key="i">{{ i }}</p>
+              <v-spacer></v-spacer>
+              <h5>Duration</h5>
+              <p>{{ duration }}</p>
+              <v-spacer></v-spacer>
+              <h5>Genre</h5>
+              <p>{{ genres }}</p>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <p>{{ overview }}</p>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+    </ScrollableContentLayout>
   </OverlayLayout>
 </template>
 <script lang="ts">
 import OverlayLayout from "../layouts/OverlayLayout.vue";
+import ScrollableContentLayout from "../layouts/ScrollableContentLayout.vue";
 import { fetchMovieCredits, fetchMovieDetails } from "@/scripts/Data IO/movieQueries";
 export default {
-  name: "MovieDetailsDisplayer",
+  name: "MovieDetailsView",
   props: ["movieId"],
   components: {
-    OverlayLayout
+    OverlayLayout,
+    ScrollableContentLayout
   },
   data() {
     return {
       movie: null,
     };
   },
+  async mounted() {
+    await this.open();
+  },
   methods: {
     async open() {
-      await this.getFullDetails();
       this.$refs.overlay.open();
+      await this.getFullDetails();
       //console.debug("movie", this.movie);
     },
     async getFullDetails() {
