@@ -17,8 +17,8 @@
           <MovieDisplayer v-for="( movie ) in  userMovies(myUser) " :key="movie" :movie="movie">
             <template #add-list>
               <v-icon v-if="movie.watched" class="ma-3" icon="done" color="primary"></v-icon>
-              <v-btn :icon="'remove'" @click="removeMovie(movie.id, movie.watched)" :color="'error'" variant="elevated"
-                :disabled="movie.watched || !addedByUser(movie.id)" size="x-small"></v-btn>
+              <v-btn :icon="'remove'" @click.prevent="removeMovie(movie.id, movie.watched)" :color="'error'"
+                variant="elevated" :disabled="movie.watched || !addedByUser(movie.id)" size="x-small"></v-btn>
             </template>
           </MovieDisplayer>
           <v-card v-for=" i  in  missingMovies(myUser) " :key="i" variant="tonal" min-height="137px" class="mb-2">

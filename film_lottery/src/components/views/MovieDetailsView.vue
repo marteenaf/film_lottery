@@ -1,6 +1,6 @@
 <template>
   <OverlayLayout ref="overlay" :title="originalTitle"
-    :subtitle="releaseYear + ' ' + (originalLanguage !== 'en' ? movieTitle : '')" :override-route="'close'">
+    :subtitle="releaseYear + ' ' + (originalLanguage !== 'en' ? movieTitle : '')">
     <ScrollableContentLayout>
       <template #main-body>
         <v-container v-if="movie">
@@ -37,7 +37,7 @@ import OverlayLayout from "../layouts/OverlayLayout.vue";
 import ScrollableContentLayout from "../layouts/ScrollableContentLayout.vue";
 import { fetchMovieCredits, fetchMovieDetails } from "@/scripts/Data IO/movieQueries";
 export default {
-  name: "MovieDetailsDisplayer",
+  name: "MovieDetailsView",
   props: ["movieId"],
   components: {
     OverlayLayout,
@@ -48,11 +48,13 @@ export default {
       movie: null,
     };
   },
+  async mounted() {
+    await this.open();
+  },
   methods: {
     async open() {
-      await this.getFullDetails();
       this.$refs.overlay.open();
-
+      await this.getFullDetails();
       //console.debug("movie", this.movie);
     },
     async getFullDetails() {
