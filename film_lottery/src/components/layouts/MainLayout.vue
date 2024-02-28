@@ -25,8 +25,7 @@ export default {
 }
 
 .auto {
-  /*flex: auto;*/
-  flex-grow: 1;
+  flex-grow: 1 !important;
   overflow: auto;
 }
 
