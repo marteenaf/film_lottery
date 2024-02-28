@@ -87,7 +87,7 @@ export const useListStore = defineStore("listStore", {
     },
     async patchSelectedListMovies() {
       const id = this.selectedList.uuid;
-      const doc = { movies: this.selectedList.movies };
+      const doc = { movies: this.selectedList.movies, lastPicked: this.selectedList.lastPicked };
       await updateList(id, doc);
     },
     updateCurrentListMovie(object) {
