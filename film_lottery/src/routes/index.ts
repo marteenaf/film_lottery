@@ -14,10 +14,8 @@ const routes: RouteRecordRaw[] = [
 
   {
     path: "/",
-    redirect: "/login",
-    meta: {
-      requiresAuth: false
-    }
+    name: "empty",
+    redirect: "/home",
   },
   {
     path: "/home",
@@ -127,8 +125,8 @@ router.beforeEach(async (to, from) => {
   const store = useUserStore();
 
   console.group("Routing Information");
-  console.log("from route", from.path, from.meta.requiresAuth, from);
-  console.log("to route", to.path, to.meta.requiresAuth, to);
+  console.log("from path:", from.path, "requires auth:", from.meta.requiresAuth, from);
+  console.log("to path:", to.path, "requires auth:", to.meta.requiresAuth, to);
   console.log("authentication status", store.getAuthentication, store.getUser);
   console.groupEnd();
 
