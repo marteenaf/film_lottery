@@ -4,6 +4,8 @@ A project for a little app that allows users to create lists of movies together 
 
 Demo [here](https://filmlottery.netlify.app/sign-up)
 
+Figma Design [here](https://www.figma.com/design/O7cEcJvD4DsHzxPaSFbBLX/film_lottery?m=auto&t=1B5ne6Uziar2qC8B-1)
+
 ## Project setup
 
 ### Local Development
