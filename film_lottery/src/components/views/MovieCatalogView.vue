@@ -8,7 +8,7 @@
       <template #content>
         <v-col class="pa-0">
           <!--<h1>Movie catalog</h1>-->
-          <div style="flex:auto; overflow:scroll;">
+          <div style="display:flex; flex-direction:column;overflow:scroll; gap:8px">
             <MovieDisplayer v-for="movie in movieList" :key="movie" :movie="movie">
               <template #movie-actions>
                 <div class="d-flex flex-column justify-center align-center pa-2" style="height:100%">
