@@ -14,9 +14,9 @@
     <template #content>
       <v-col>
         <div v-for=" myUser  in  allUsers " :key="myUser" class="d-flex flex-column" style="gap:8px;margin-bottom:8px">
-          <MovieDisplayer v-for="( movie ) in  userMovies(myUser) " :key="movie" :movie="movie">
+          <MovieDisplayer v-for="( movie ) in  userMovies(myUser) " :key="movie" :movie="movie" :isMain="myUser==this.user">
             <template #movie-actions>
-              <v-btn icon size="x-small" variant="plain" @click.stop="removeMovie(movie.id,movie.watched)" :disabled="movie.watched"><v-icon size="x-small">{{ 'close' }}</v-icon></v-btn>
+              <v-btn v-if="myUser==this.user" icon size="x-small" variant="plain" @click.stop="removeMovie(movie.id,movie.watched)" :disabled="movie.watched"><v-icon size="x-small">{{ 'close' }}</v-icon></v-btn>
                 <v-checkbox @click.stop v-model="movie.watched" @input="watchMovie(movie)" color="primary" hide-details></v-checkbox>
             </template>
           </MovieDisplayer>

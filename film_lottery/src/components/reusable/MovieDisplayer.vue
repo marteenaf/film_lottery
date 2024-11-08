@@ -1,6 +1,6 @@
 <template>
   <v-card variant="elevated" :class="['d-flex']" min-height="130px" @click="movieDetails"
-    style="cursor: pointer;" color="primary-container">
+    style="cursor: pointer;" :color="isMain?'primary-container':'primay'">
     <v-card-item :class="['pa-2', movie.watched ? 'opacity' : '']">
       <img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" align="center" />
     </v-card-item>
@@ -20,7 +20,7 @@
 <script lang="ts">
 export default {
   name: "MovieDisplayer",
-  props: ["movie"],
+  props: ["movie","isMain"],
   components: {
   },
   methods: {
