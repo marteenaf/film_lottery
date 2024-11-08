@@ -94,10 +94,11 @@ export default {
         }
       }
     },
-    watchMovie() {
+    async watchMovie() {
       if (this.selectedMovie) {
         const obj = { dbid: this.selectedMovie.id, watched: true };
-        this.store.updateCurrentListMovie(obj);
+        await this.store.updateCurrentListMovie(obj);
+        await this.store.updateLastPicked(this.selectedMovie.id);
         this.$router.push({ name: "ListView", params: this.$route.params });
       }
     },

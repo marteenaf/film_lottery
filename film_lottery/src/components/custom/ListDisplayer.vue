@@ -13,25 +13,19 @@
     </template>
     <template #content>
       <v-col>
-        <div v-for=" myUser  in  allUsers " :key="myUser">
+        <div v-for=" myUser  in  allUsers " :key="myUser" class="d-flex flex-column" style="gap:8px;margin-bottom:8px">
           <MovieDisplayer v-for="( movie ) in  userMovies(myUser) " :key="movie" :movie="movie">
-            <template #add-list>
-              <v-icon v-if="movie.watched" class="ma-3" icon="done" color="primary"></v-icon>
-              <v-btn :icon="'remove'" @click.prevent="removeMovie(movie.id, movie.watched)" :color="'error'"
-                variant="elevated" :disabled="movie.watched || !addedByUser(movie.id)" size="x-small"></v-btn>
+            <template #movie-actions>
+              <v-btn icon size="x-small" variant="plain" @click.stop="removeMovie(movie.id,movie.watched)" :disabled="movie.watched"><v-icon size="x-small">{{ 'close' }}</v-icon></v-btn>
+                <v-checkbox @click.stop v-model="movie.watched" @input="watchMovie(movie)" color="primary" hide-details></v-checkbox>
             </template>
           </MovieDisplayer>
-          <v-card v-for=" i  in  missingMovies(myUser) " :key="i" variant="tonal" min-height="137px" class="mb-2">
-            <v-card-item>{{ myUser == this.user ? "Your movie " + (userMovies(myUser).length + i) : myUser + " " +
-              (userMovies(myUser).length + i) }}</v-card-item></v-card>
+          <MovieDisplayerSlot v-for=" i  in  missingMovies(myUser) " :key="i" :message="(myUser == this.user ? 'Your':myUser) + ' movie '+(userMovies(myUser).length + i)" :add="myUser==this.user" ></MovieDisplayerSlot>
         </div>
       </v-col>
     </template>
     <template #fab v-if="!this.$route.path.includes('add')">
-      <v-col class="d-flex pa-5 align-center">
-        <v-btn v-if="!this.$route.path.includes('add')" :icon="'add'" @click="this.$router.push({ name: 'AddMovies' })"
-          color="primary" size="large"></v-btn>
-        <v-spacer></v-spacer>
+      <v-col class="d-flex pa-5 pb-10 align-center justify-center">
         <PickButton :color="'red'" :shadowColor="'darkred'" :text="'Pick Movie'"
           @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
       </v-col>
@@ -40,6 +34,7 @@
 </template>
 <script lang="ts">
 import MovieDisplayer from "../reusable/MovieDisplayer.vue";
+import MovieDisplayerSlot from "../reusable/MovieDisplayerSlot.vue";
 import ListStatsDisplayerVue from "./ListStatsDisplayer.vue";
 import PickButton from "@/components/reusable/PickButton.vue";
 import MainLayout from "@/components/layouts/MainLayout.vue";
@@ -50,6 +45,7 @@ export default {
   props: ["list", "user"],
   components: {
     MovieDisplayer,
+    MovieDisplayerSlot,
     ListStatsDisplayerVue,
     PickButton,
     MainLayout
@@ -68,8 +64,8 @@ export default {
     //console.debug(this.allMovies);
   },
   methods: {
-    updateMovieList(movie, watched) {
-      this.$emit("update-list", { dbid: movie, watched: watched });
+    watchMovie(movie) {
+      this.$emit("update-list", { dbid: movie.id, watched: movie.watched });
     },
     async getMovieDetails() {
 
@@ -84,8 +80,8 @@ export default {
         Promise.all(promises).then(values => { this.allMovies = values; });
       }
     },
-    removeMovie(id, watched) {
-      if (!watched) {
+    removeMovie(id,watched) {
+      if(!watched){
         this.$emit("remove-movie", id);
       }
     },

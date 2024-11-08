@@ -23,7 +23,17 @@ const vuetify = createVuetify({
   },
   theme: {
     defaultTheme: "light",
-  }
+    themes: {
+      light: {
+        dark: false,
+        colors: {
+          "primary-container": "#EADDFF",
+          "on-surface": "#1D1B20",
+        }
+      }
+    }
+  },
+
 });
 
 const pinia = createPinia();

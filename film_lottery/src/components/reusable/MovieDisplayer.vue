@@ -1,23 +1,19 @@
 <template>
-  <v-card variant="outlined" :class="['d-flex', 'mb-2',]" min-height="130px" @click="movieDetails"
-    style="cursor: pointer;">
-    <v-card-item class="pa-0 pl-1">
-      <v-btn style="opacity:100%!important" icon="more_vert" size="x-small" @click.prevent="movieDetails"
-        variant="plain"></v-btn>
-    </v-card-item>
+  <v-card variant="elevated" :class="['d-flex']" min-height="130px" @click="movieDetails"
+    style="cursor: pointer;" color="primary-container">
     <v-card-item :class="['pa-2', movie.watched ? 'opacity' : '']">
       <img :src="'https://image.tmdb.org/t/p/original/' + posterPath" width="75" align="center" />
     </v-card-item>
     <v-card-item class="pa-2" style="flex:auto !important;">
-      <v-card-title v-if="movie.watched">WATCHED</v-card-title>
+      <v-card-subtitle :class="[screen ? 'small-screen-subtitle' : '']">{{ addedBy }}</v-card-subtitle>
+      <v-card-title v-if="movie.watched" class="font-weight-bold">WATCHED</v-card-title>
       <v-card-title
         :class="[movie.watched ? 'watched' : '', 'text-wrapped', screen ? 'small-screen-title' : '', 'mb-2']">{{
           movieTitle }}</v-card-title>
       <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ releaseYear }} {{ duration }}</v-card-subtitle>
-      <v-card-subtitle :class="screen ? 'small-screen-subtitle' : ''">{{ addedBy }}</v-card-subtitle>
     </v-card-item>
-    <v-card-actions class="pa-2">
-      <slot name="add-list"></slot>
+    <v-card-actions class="pa-2 d-flex flex-column">
+        <slot name="movie-actions" ></slot>
     </v-card-actions>
   </v-card>
 </template>
@@ -31,9 +27,8 @@ export default {
     async movieDetails() {
       const route = this.$route.path;
       const newPath = route + "/movie/" + this.movie.id;
-      console.debug(newPath);
       this.$router.push(newPath);
-    }
+    },
   },
   computed: {
     movieTitle() {
