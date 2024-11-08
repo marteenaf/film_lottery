@@ -6,13 +6,15 @@
           style="max-height:80px !important"></v-text-field>
       </template>
       <template #content>
-        <v-col>
+        <v-col class="pa-0">
           <!--<h1>Movie catalog</h1>-->
-          <div style="flex:auto; overflow:scroll;">
+          <div style="display:flex; flex-direction:column;overflow:scroll; gap:8px">
             <MovieDisplayer v-for="movie in movieList" :key="movie" :movie="movie">
-              <template #add-list>
+              <template #movie-actions>
+                <div class="d-flex flex-column justify-center align-center pa-2" style="height:100%">
                 <v-btn :icon="inList[movie.id] ? 'check' : 'add'" @click.stop="updateList(movie.id, movie.watched)"
-                  :color="inList[movie.id] ? 'success' : 'primary'" variant="elevated"></v-btn>
+                  :color="inList[movie.id] ? 'success' : 'primary'" variant="elevated" size="small"></v-btn>
+                </div>
               </template>
             </MovieDisplayer>
           </div>
