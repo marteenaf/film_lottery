@@ -12,7 +12,7 @@ Figma Design [here](https://www.figma.com/design/O7cEcJvD4DsHzxPaSFbBLX/film_lot
 
 For this repo to work you will need to set-up a database in mongo, the backend repo and an auth key for "the big movie databse" --> follow instructions [here](https://github.com/marteenaf/film_lottery_backend)
 
-Once you have setup a database and the back-end, add an .env file in your root directory with the following template:
+Once you have setup a database and the back-end, add an .env file in the folder 'film_lottery' directory with the following template:
 
 ```{env file}
 VUE_APP_BACKEND_URL='http://localhost:<Backend port number>'
@@ -23,6 +23,7 @@ VUE_APP_MONGO_LIST_COLLECTION='<collection name for lists>'
 
 Once the above is set up run:
 ```
+cd film_lottery
 npm install
 npm run dev
 ```
