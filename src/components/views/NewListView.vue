@@ -1,24 +1,25 @@
 <template>
   <OverlayLayout ref="overlay" title="New List" :subtitle="'created by ' + userStore.getUser">
-    <!-- <ListMetadataDisplayer :editable="true" buttonLabel="Create" :callback="createNewList"
-      :cancelRoute="{ name: 'Home' }">
-    </ListMetadataDisplayer> -->
     <MainLayout>
       <template #content>
         <v-col>
-        <component :is="steps[currentStep].component" v-model:formValue="form[steps[currentStep].value]" :users="form.users" :name="form.name"></component>
-      </v-col>
+          <component :is="steps[currentStep].component" v-model:formValue="form[steps[currentStep].value]"
+            :users="form.users" :name="form.name"></component>
+        </v-col>
       </template>
       <template #fab>
         <div class="d-flex flex-column align-center" style="width:100%;gap:16px;">
-       <div class="anchors">
-        <v-icon v-for="(step,i) in steps" :key="step.value" color="primary">{{ i==currentStep?'circle':'radio_button_unchecked' }}</v-icon>
-      </div>
-        <div class="d-flex">
-          <v-btn variant="plain" class="text-decoration-underline" color="primary" @click="this.$refs.overlay.close();" >Cancel</v-btn>
-          <v-btn color="primary" @click="currentStep<steps.length-1?nextStep():createNewList()">{{currentStep<steps.length-1?"Next":"Create"}}</v-btn>
+          <div class="anchors">
+            <v-icon v-for="(step, i) in steps" :key="step.value" color="primary" @click="toStep(i)">{{
+              i == currentStep ? 'circle' : 'radio_button_unchecked' }}</v-icon>
+          </div>
+          <div class="d-flex">
+            <v-btn variant="plain" class="text-decoration-underline" color="primary"
+              @click="this.$refs.overlay.close();">Cancel</v-btn>
+            <v-btn color="primary" @click="currentStep < steps.length - 1 ? nextStep() : createNewList()">
+              {{ currentStep < steps.length - 1 ? "Next" : "Create" }} </v-btn>
+          </div>
         </div>
-      </div>
       </template>
     </MainLayout>
   </OverlayLayout>
@@ -46,29 +47,29 @@ export default {
     return {
       userStore: useUserStore(),
       listStore: useListStore(),
-      steps:[
+      steps: [
         {
-          value:"name",
-          title:"Name",
-          component:markRaw(ListName),
+          value: "name",
+          title: "Name",
+          component: markRaw(ListName),
 
         },
         {
-          value:"users",
-          title:"Collaborators",
-          component:markRaw(ListCollaborators),
+          value: "users",
+          title: "Collaborators",
+          component: markRaw(ListCollaborators),
         },
         {
-          value:"length",
-          title:"Length",
-          component:markRaw(ListLength)
+          value: "length",
+          title: "Length",
+          component: markRaw(ListLength)
         }
       ],
-      currentStep:0,
-      form:{
-        name:"hey",
-        length:1,
-        users:[]
+      currentStep: 0,
+      form: {
+        name: "hey",
+        length: 1,
+        users: []
       }
     };
   },
@@ -80,8 +81,8 @@ export default {
       await this.getListFromUrl();
       this.fillForm();
     }
-    if(this.$route.query){
-      this.currentStep = this.steps.indexOf(this.steps.find(st=>st.value==this.$route.query.step))||0;
+    if (this.$route.query) {
+      this.currentStep = this.steps.indexOf(this.steps.find(st => st.value == this.$route.query.step)) || 0;
     }
   },
   methods: {
@@ -91,12 +92,17 @@ export default {
       await this.listStore.postNewList(this.form.name, maxLength, this.form.users, this.userStore.getUser);
       this.$router.push({ name: "ListView", params: { id: this.listStore.selectedList.uuid } });
     },
-    nextStep(){
-      this.currentStep +=this.currentStep<this.steps.length-1?1:0;
-      this.$router.push({name:"NewListView",query:{step:this.steps[this.currentStep]?.value||"name"}});
+    nextStep() {
+      this.currentStep += this.currentStep < this.steps.length - 1 ? 1 : 0;
+      this.$router.push({ name: "NewListView", query: { step: this.steps[this.currentStep]?.value || "name" } });
+    },
+    toStep(index) {
+      this.currentStep = index;
+      this.$router.push({ name: "NewListView", query: { step: this.steps[this.currentStep]?.value || "name" } });
+
     }
   },
-  
+
 };
 </script>
 <style>
