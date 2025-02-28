@@ -1,7 +1,7 @@
 <template>
   <div v-if="!userStats">
     <ListProgressBar :barHeight="30" :showText="true" :value-label="valueLabel" :subtotal-label="subtotalLabel"
-      :total-label="totalLabel" :total="list.maxLength" :value="watchedMovies" :subtotal="list.movies.length">
+      :total-label="totalLabel" :total="list.maxLength||list.movies.length" :value="watchedMovies" :subtotal="list.movies.length">
     </ListProgressBar>
   </div>
   <div v-else v-for="user in allUsers" :key="user">
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     userMaxLength() {
-      const result = this.list.maxLength / (this.list.users.length + 1);
+      const result = this.list.maxLength>0? this.list.maxLength / (this.list.users.length + 1):this.list.movies.length ;
       return result;
     },
     userAddedMovies(user) {

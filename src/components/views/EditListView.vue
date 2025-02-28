@@ -11,7 +11,7 @@
       </v-alert>
       <v-card-actions>
         <v-btn @click="confirm" variant="elevated"
-          :color="this.alertAction == 'edit' ? 'primary' : 'error'">CONFIRM</v-btn>
+          :color="alertAction == 'edit' ? 'primary' : 'error'">CONFIRM</v-btn>
         <v-btn @click="() => dialog = false" variant="text" class="text-decoration-underline"
           color="primary">CANCEL</v-btn>
       </v-card-actions>

@@ -23,7 +23,7 @@
       <template #fab>
         <v-col align="center">
           <v-btn
-            @click="() => { patchList(); this.$router.push({ name: 'ListView', params: { id: this.$route.params.id } }) }"
+            @click="() => { patchList(); $router.push({ name: 'ListView', params: { id: $route.params.id } }) }"
             color="primary" class="mt-4">Done</v-btn>
         </v-col>
       </template>
@@ -63,8 +63,8 @@ export default {
   },
   methods: {
     addToList(id) {
-      console.assert(this.listStore.selectedList.movies.length <= this.listStore.selectedList.maxLength, "there are too many movies");
-      if (this.listStore.checkUserCanAddMovies && this.listStore.selectedList.movies.length < this.listStore.selectedList.maxLength) {
+      if (this.listStore.checkUserCanAddMovies 
+      && (this.listStore.selectedList.movies.length < this.listStore.selectedList.maxLength||this.listStore.selectedList.maxLength==0)) {
         this.inList[id] = true;
         this.listStore.addMovie(id, this.userStore.getUser);
         //console.debug(this.listStore.selectedList);
@@ -88,7 +88,7 @@ export default {
         } else {
           this.addToList(id);
         }
-        this.searchText = "";
+        // this.searchText = "";
       }
     },
     async patchList() {
@@ -97,8 +97,9 @@ export default {
   },
   watch: {
     async searchText(value) {
+      const searchValue = value||"";
       //run query to get the movies
-      const requestResult = await searchMovies(value);
+      const requestResult = await searchMovies(searchValue);
       const searchResult = requestResult.data;
       this.movieList = searchResult.results.map((mov) => {
         if (this.listStore.selectedList) {

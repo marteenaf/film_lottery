@@ -31,7 +31,7 @@
     <template #fab>
       <v-col align="center">
         <v-btn size="large" icon color="primary"
-          @click="this.$router.push({ name: 'NewListView' })"><v-icon>add</v-icon></v-btn>
+          @click="this.$router.push({ name: 'NewListView',query:{step:'name'} })"><v-icon>add</v-icon></v-btn>
       </v-col>
     </template>
   </MainLayout>
