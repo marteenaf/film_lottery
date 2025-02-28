@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     userMaxLength() {
-      const result = this.list.maxLength / (this.list.users.length + 1);
+      const result = this.list.maxLength>0? this.list.maxLength / (this.list.users.length + 1):this.list.movies.length ;
       return result;
     },
     userAddedMovies(user) {
