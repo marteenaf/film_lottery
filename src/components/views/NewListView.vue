@@ -15,7 +15,7 @@
           </div>
           <div class="d-flex">
             <v-btn variant="plain" class="text-decoration-underline" color="primary"
-              @click="this.$refs.overlay.close();">Cancel</v-btn>
+              @click="closeOverlay">Cancel</v-btn>
             <v-btn color="primary" @click="currentStep < steps.length - 1 ? nextStep() : createNewList()">
               {{ currentStep < steps.length - 1 ? "Next" : "Create" }} </v-btn>
           </div>
@@ -100,6 +100,9 @@ export default {
       this.currentStep = index;
       this.$router.push({ name: "NewListView", query: { step: this.steps[this.currentStep]?.value || "name" } });
 
+    },
+    closeOverlay(){
+      this.$refs.overlay.close();
     }
   },
 
