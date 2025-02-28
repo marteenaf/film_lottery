@@ -31,9 +31,13 @@ export const useListStore = defineStore("listStore", {
         const users = this.selectedList.users.length + 1;
         const currentUser = useUserStore().getUser;
         if (currentUser) {
+          if(this.selectedList.maxLength>0){
           const addedMovies = this.selectedList.movies.filter(m => m.addedBy == currentUser).length;
           const max = Math.floor(this.selectedList.maxLength / users);
           return addedMovies < max;
+          }else{
+            return true;
+          }
         }
       }
       return false;
@@ -106,7 +110,7 @@ export const useListStore = defineStore("listStore", {
       if (myList) {
         const exists = myList.movies.filter(m => m.dbid == movieId);
         if (exists.length == 0) {
-          if (myList.movies.length < myList.maxLength) {
+          if (myList.movies.length < myList.maxLength || myList.maxLength==0) {
             myList.movies.push({ dbid: movieId, watched: false, addedBy: user });
             this.setCurrentList(myList.uuid);
           } else {

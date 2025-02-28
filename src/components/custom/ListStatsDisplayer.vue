@@ -1,7 +1,7 @@
 <template>
   <div v-if="!userStats">
     <ListProgressBar :barHeight="30" :showText="true" :value-label="valueLabel" :subtotal-label="subtotalLabel"
-      :total-label="totalLabel" :total="list.maxLength" :value="watchedMovies" :subtotal="list.movies.length">
+      :total-label="totalLabel" :total="list.maxLength||list.movies.length" :value="watchedMovies" :subtotal="list.movies.length">
     </ListProgressBar>
   </div>
   <div v-else v-for="user in allUsers" :key="user">

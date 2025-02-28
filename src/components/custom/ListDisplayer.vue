@@ -13,21 +13,28 @@
     </template>
     <template #content>
       <v-col>
-        <div v-for=" myUser  in  allUsers " :key="myUser" class="d-flex flex-column" style="gap:8px;margin-bottom:8px">
-          <MovieDisplayer v-for="( movie ) in  userMovies(myUser) " :key="movie" :movie="movie" :isMain="myUser==this.user">
+        <div v-if="list.maxLength==0" class="mb-2">
+          <MovieDisplayerSlot :message="'Add your movies here'" :add="true" ></MovieDisplayerSlot>
+        </div>
+        <div v-for=" myUser  in  allUsers " :key="myUser">
+          <div class="d-flex flex-column" style="gap:8px;margin-bottom:8px">
+          <MovieDisplayer v-for="( movie ) in  userMovies(myUser) " :key="movie" :movie="movie" :isMain="myUser==user">
             <template #movie-actions>
-              <v-btn v-if="myUser==this.user" icon size="x-small" variant="plain" @click.stop="removeMovie(movie.id,movie.watched)" :disabled="movie.watched"><v-icon size="x-small">{{ 'close' }}</v-icon></v-btn>
+              <v-btn v-if="myUser==user" icon size="x-small" variant="plain" @click.stop="removeMovie(movie.id,movie.watched)" :disabled="movie.watched"><v-icon size="x-small">{{ 'close' }}</v-icon></v-btn>
                 <v-checkbox @click.stop v-model="movie.watched" @input="watchMovie(movie)" color="primary" hide-details></v-checkbox>
             </template>
           </MovieDisplayer>
-          <MovieDisplayerSlot v-for=" i  in  missingMovies(myUser) " :key="i" :message="(myUser == this.user ? 'Your':myUser) + ' movie '+(userMovies(myUser).length + i)" :add="myUser==this.user" ></MovieDisplayerSlot>
+        </div >
+          <div v-if="list.maxLength>0" class="d-flex flex-column" style="gap:8px;margin-bottom:8px">
+          <MovieDisplayerSlot v-for=" i  in  missingMovies(myUser) " :key="i" :message="(myUser == user ? 'Your':myUser) + ' movie '+(userMovies(myUser).length + i)" :add="myUser==user" ></MovieDisplayerSlot>
+        </div>
         </div>
       </v-col>
     </template>
-    <template #fab v-if="!this.$route.path.includes('add')">
+    <template #fab v-if="!$route.path.includes('add')">
       <v-col class="d-flex pa-5 pb-10 align-center justify-center">
         <PickButton :color="'red'" :shadowColor="'darkred'" :text="'Pick Movie'"
-          @pick="this.$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
+          @pick="$router.push({ name: 'PickMovies' })" :disabled="disabled"></PickButton>
       </v-col>
     </template>
   </MainLayout>

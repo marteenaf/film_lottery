@@ -5,7 +5,7 @@
     </div>
     <div class="step-input">
         <v-checkbox v-model="isUnlimited" label="Unlimited" @input="setToInfinity()"></v-checkbox>
-        <v-text-field v-if="!isUnlimited" v-model="_formValue"></v-text-field>
+        <v-text-field v-if="!isUnlimited" v-model="_formValue" type="number" :min="1" :step="1" :rules="lengthRules"></v-text-field>
         <p>{{isUnlimited?"You will be able to add as many movies as you like!":"Total movies: "+((users.length+1)*_formValue)}}</p>
     </div>
 </template>
@@ -27,12 +27,15 @@ export default{
     data(){
         return{
             isUnlimited:false,
+            lengthRules:[
+                (value)=>{if(!value || value<1){return "You must add at least 1 movie";}else{return true;}}
+            ]
         };
     },
     methods:{
         setToInfinity(){
             if(this.isUnlimited){
-                this._formValue = "ulimited";
+                this._formValue = 0;
             }else{
                 this._formValue = 1;
             }
